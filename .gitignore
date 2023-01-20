@@ -1,0 +1,6 @@
+*.o
+*.so
+
+G__Tamex_Full.cxx
+libGo4UserAnalysis_rdict.pcm
+libGo4UserAnalysis.rootmap
