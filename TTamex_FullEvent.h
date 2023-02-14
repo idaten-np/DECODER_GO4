@@ -43,9 +43,23 @@ class TTamex_FullEvent : public TGo4EventElement {
       }
       Double_t GetTimeDiff(UInt_t channel)
       {
-        if(channel>=MAX_CHA_AN_DIFF) return -1; // TODO: proper error handling maybe..
-        return fTimeDiff[channel];
+	      if(channel>=MAX_CHA_AN_DIFF) return -1; // TODO: proper error handling maybe..
+	      return fTimeDiff[channel];
       }
+
+      void AddFlipTime(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t cha, Int_t edge_type, Int_t coarse_ct, Int_t fine_time)
+      {
+	      SSY       	.push_back(ssy);
+	      SFP       	.push_back(sfp);
+	      TAM       	.push_back(tam);
+	      CHA       	.push_back(cha);
+	      Edge_type 	.push_back(edge_type);
+	      Coarse_ct 	.push_back(coarse_ct);
+	      Fine_time 	.push_back(fine_time);
+		//printf("AddFlipTime size %lu capacity %lu\n", SSY.size(), SSY.capacity());
+      }
+
+
 
       /* Total number of timestamps in buffer for specific id. to be used in readout loops of second analysis step*/
 //      UInt_t NumTimestamps(UChar_t channel)
@@ -54,9 +68,16 @@ class TTamex_FullEvent : public TGo4EventElement {
 //          return fTimeStamp[channel].size();
 //        }
 
-   protected:
+   private:
 
       Double_t fTimeDiff[MAX_CHA_AN_DIFF];
+      std::vector<UInt_t> 	SSY;
+      std::vector<UInt_t> 	SFP;
+      std::vector<UInt_t> 	TAM;
+      std::vector<Int_t> 	CHA;
+      std::vector<Int_t> 	Edge_type;
+      std::vector<Int_t> 	Coarse_ct;
+      std::vector<Int_t> 	Fine_time;
 
 
 

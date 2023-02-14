@@ -4,3 +4,7 @@
 G__Tamex_Full.cxx
 libGo4UserAnalysis_rdict.pcm
 libGo4UserAnalysis.rootmap
+
+*.lmd
+*.root
+tamex1_tdc_time_diff.txt

@@ -37,7 +37,7 @@
 
 #define MAX_SSY        1                // maximum number of sub-systems (readout pcs in nxm system)
 #define MAX_SFP        4
-#define MAX_TAM       10                // maximum febex/tamex per sfp
+#define MAX_TAM        7                // maximum febex/tamex per sfp
 #define MAX_CHA_INPUT 33                // A) maximum physical input channels per module. must be modulo 4
 #define MAX_CHA       MAX_CHA_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
 //////////////
@@ -120,6 +120,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
       Bool_t fCalibrationDone;// flag if calibration is ready
 
       TH1   *h_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
+      TH1   *h_sum_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // sum histogram in SFP id / TAMEX id / CHANNEL nr coordinates
 
       TH1   *h_err_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
  
@@ -155,6 +156,10 @@ class TTamex_FullProc : public TGo4EventProcessor {
       TH2   *h_p_totb_vs_b;
       TH2   *h_p_diff_ba_sum_ab;                
       
+	TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][16];
+	TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][16];
+
+
       TGo4Picture      *fPicture;
 
    ClassDef(TTamex_FullProc,1)

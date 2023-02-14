@@ -41,7 +41,16 @@ void TTamex_FullEvent::Clear(Option_t *t)
       for (Int_t l_k = 0; l_k < MAX_CHA_AN_DIFF; l_k++)
       {
         //fTimeStamp[l_k].clear();
-        fTimeDiff[l_k]= 30 * (l_k+1) * RESET_VAL; // JAM should be out of bounce for regular data
+	      fTimeDiff[l_k]= 30 * (l_k+1) * RESET_VAL; // JAM should be out of bounce for regular data
       }
 
+      SSY            	.clear();
+      SFP            	.clear();
+      TAM            	.clear();
+      CHA            	.clear();
+      Edge_type      	.clear();
+      Coarse_ct      	.clear();
+      Fine_time      	.clear();
+
 }
+
