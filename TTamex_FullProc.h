@@ -22,11 +22,11 @@
 #define MAX_SPEZIAL 1000000000
 
 #ifdef WR_TIME_STAMP
- #define SUB_SYSTEM_ID      0x400
- #define TS__ID_L16         0x3e1
- #define TS__ID_M16         0x4e1
- #define TS__ID_H16         0x5e1
- #define TS__ID_X16         0x6e1
+#define SUB_SYSTEM_ID      0x400
+#define TS__ID_L16         0x3e1
+#define TS__ID_M16         0x4e1
+#define TS__ID_H16         0x5e1
+#define TS__ID_X16         0x6e1
 #endif // WR_TIME_STAMP
 
 #define STATISTIC 200000
@@ -38,25 +38,28 @@
 #define MAX_SSY        1                // maximum number of sub-systems (readout pcs in nxm system)
 #define MAX_SFP        4
 #define MAX_TAM        7                // maximum febex/tamex per sfp
-#define MAX_CHA_INPUT 33                // A) maximum physical input channels per module. must be modulo 4
-#define MAX_CHA       MAX_CHA_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
-//////////////
-//#define MAX_CHA_INPUT  32                // A) maximum physical input channels per module. must be modulo 4
-//#define MAX_CHA        MAX_CHA_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
 
-                             // it seems that only "leading" edge bit is set for 0-47 channels
-                             // therefore "MAX_CHA_INPUT 48" and only "MAX_CHA_INPUT * 1"   
-                             // this has changed to previous version and comments A) and B) are wrong
-                             // so called 17th channel should would appear according to chahit as
-                             // channel nr 48, therefore 49 channels in total
+#define MAX_CHA_old_INPUT 33                // A) maximum physical input channels per module. must be modulo 4
+#define MAX_CHA_old       MAX_CHA_old_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
+#define MAX_CHA_phy 16
+#define MAX_CHA_tam MAX_CHA_phy *2
+//////////////
+//#define MAX_CHA_old_INPUT  32                // A) maximum physical input channels per module. must be modulo 4
+//#define MAX_CHA_old        MAX_CHA_old_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
+
+// it seems that only "leading" edge bit is set for 0-47 channels
+// therefore "MAX_CHA_old_INPUT 48" and only "MAX_CHA_old_INPUT * 1"   
+// this has changed to previous version and comments A) and B) are wrong
+// so called 17th channel should would appear according to chahit as
+// channel nr 48, therefore 49 channels in total
 
 //#define N_DEEP_AN      4                // deep analysis for first N_DEEP_AN channels specified below.
-                                        // must be even nr.
+// must be even nr.
 
 #define N_DEEP_AN      0  // JAM 7-june-2022: no deep correlations when we use tree output
 
-#define MAX_CHA_AN    24                // total nr. of channels analyzed. must be modulo 4
-//#define MAX_CHA_AN    64                // total nr. of channels analyzed. must be modulo 4
+#define MAX_CHA_old_AN    24                // total nr. of channels analyzed. must be modulo 4
+//#define MAX_CHA_old_AN    64                // total nr. of channels analyzed. must be modulo 4
 #define MAX_HITS       1                // max. number of hits per channel accepted
 //#define MAX_HITS      10                // max. number of hits per channel accepted
 
@@ -75,12 +78,13 @@
 #define CHA_ID { 1,34, 2,35,21,54,22,55, 3,36, 4,37, 0, 1, 0,21, 0, 3, 1,21,21, 3, 3, 1}//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } // regular
 
 
-#define N_CAL_EVT               (ULong64_t) 200000
+#define N_CAL_EVT               (ULong64_t) 800000
+//#define N_CAL_EVT               (ULong64_t) 200000
 
 #define N_PHY_TREND_PRINT       (ULong64_t) 1000000
 
 //#define N_DELTA_T   400000
-#define N_DELTA_T   100000
+#define N_DELTA_T   1000*1000
 #define N_BIN       100000
 #define N_TIM       10000
 
@@ -104,77 +108,79 @@ class TTamex_FullEvent;
 class TGo4Fitter;
 
 class TTamex_FullProc : public TGo4EventProcessor {
-   public:
-      TTamex_FullProc() ;
-      TTamex_FullProc(const char* name);
-      virtual ~TTamex_FullProc() ;
+				public:
+								TTamex_FullProc() ;
+								TTamex_FullProc(const char* name);
+								virtual ~TTamex_FullProc() ;
 
-      Bool_t BuildEvent(TGo4EventElement* target); // event processing function
+								Bool_t BuildEvent(TGo4EventElement* target); // event processing function
 
- private:
-      TGo4MbsEvent  *fInput; //!
-      TTamex_FullEvent* fOutput; //!
+				private:
+								TGo4MbsEvent  *fInput; //!
+								TTamex_FullEvent* fOutput; //!
 
-      TTamex_FullParam* fPar;
+								TTamex_FullParam* fPar;
 
-      Bool_t fCalibrationDone;// flag if calibration is ready
+								Bool_t fCalibrationDone;// flag if calibration is ready
 
-      TH1   *h_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
-      TH1   *h_sum_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // sum histogram in SFP id / TAMEX id / CHANNEL nr coordinates
+								TH1   *h_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_old];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
 
-      TH1   *h_err_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
- 
-      TH1   *h_tim[MAX_CHA_AN];                          // box histogram in test channel coordinates
+								TH1   *h_err_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_old];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
 
-      TH1   *h_sum[MAX_CHA_AN];                          // sum histogram in test channel coordinates
+								TH1   *h_tim[MAX_CHA_old_AN];                          // box histogram in test channel coordinates
 
-      TH2   *h_raw_tim_corr[N_DEEP_AN>>1];               // raw time correlatian ch1-ch0, ch3-ch2, ...
+								TH1   *h_sum[MAX_CHA_old_AN];                          // sum histogram in test channel coordinates
+                TH1   *h_tim_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam];
+								TH1   *h_sum_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam];  // sum histogram in SFP id / TAMEX id / CHANNEL nr coordinates
 
-      TH1   *h_cal_tim_diff[MAX_CHA_AN][MAX_CHA_AN];     // calibrated channel time differences
+								TH2   *h_raw_tim_corr[N_DEEP_AN>>1];               // raw time correlatian ch1-ch0, ch3-ch2, ...
 
-      TH1   *h_cal_tim_diff_wic[MAX_CHA_AN][MAX_CHA_AN]; // calibrated chan. time diff. 
-      TH1   *h_cal_tim_diff_woc[MAX_CHA_AN][MAX_CHA_AN]; // with a (wic) and without (woc)
-                                                         // clock 
-      TH1   *h_coarse_diff[MAX_CHA_AN][MAX_CHA_AN];      // coarse ctr differences
+								TH1   *h_cal_tim_diff[MAX_CHA_old_AN][MAX_CHA_old_AN];     // calibrated channel time differences
 
-      TH1   *h_hitpat[MAX_CHA_AN];                       // test channel hit pattern
+								TH1   *h_cal_tim_diff_wic[MAX_CHA_old_AN][MAX_CHA_old_AN]; // calibrated chan. time diff. 
+								TH1   *h_cal_tim_diff_woc[MAX_CHA_old_AN][MAX_CHA_old_AN]; // with a (wic) and without (woc)
+								// clock 
+								TH1   *h_coarse_diff[MAX_CHA_old_AN][MAX_CHA_old_AN];      // coarse ctr differences
 
-      TH1   *h_coarse[MAX_CHA_AN];                       // coarse ctr distribution
+								TH1   *h_hitpat[MAX_CHA_old_AN];                       // test channel hit pattern
 
-      TH1   *h_cal_tim_diff_te[MAX_CHA_AN][MAX_CHA_AN]; // calibrated channel time differences
+								TH1   *h_coarse[MAX_CHA_old_AN];                       // coarse ctr distribution
 
-      TH1   *h_cal_tim_diff_tr_av[MAX_CHA_AN][MAX_CHA_AN]; //
+								TH1   *h_cal_tim_diff_te[MAX_CHA_old_AN][MAX_CHA_old_AN]; // calibrated channel time differences
 
-      TH1   *h_cal_tim_diff_tr_av_bc[MAX_CHA_AN][MAX_CHA_AN]; // ... base line corrected      
+								TH1   *h_cal_tim_diff_tr_av[MAX_CHA_old_AN][MAX_CHA_old_AN]; //
 
-      TH1   *h_cal_tim_diff_tr_rms[MAX_CHA_AN][MAX_CHA_AN]; //
+								TH1   *h_cal_tim_diff_tr_av_bc[MAX_CHA_old_AN][MAX_CHA_old_AN]; // ... base line corrected      
 
-      TH2   *h_7_5_vs_11_9; 
+								TH1   *h_cal_tim_diff_tr_rms[MAX_CHA_old_AN][MAX_CHA_old_AN]; //
 
-      TH1   *h_p_sum_ab;
-      TH2   *h_p_tota_vs_a;
-      TH2   *h_p_totb_vs_b;
-      TH2   *h_p_diff_ba_sum_ab;                
-      
-	TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][16];
-	TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][16];
+								TH2   *h_7_5_vs_11_9; 
+
+								TH1   *h_p_sum_ab;
+								TH2   *h_p_tota_vs_a;
+								TH2   *h_p_totb_vs_b;
+								TH2   *h_p_diff_ba_sum_ab;                
+
+								TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+								TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+								TH2 *h2_STOT_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 
-      TGo4Picture      *fPicture;
+								TGo4Picture      *fPicture;
 
-   ClassDef(TTamex_FullProc,1)
+								ClassDef(TTamex_FullProc,1)
 };
 
 static  UInt_t l_err_catch = 0;
 static  UInt_t l_prev_err_catch = 0;
-static  UInt_t l_err_ssy [MAX_CHA];
-static  UInt_t l_err_sfp [MAX_CHA];
-static  UInt_t l_err_tam [MAX_CHA];
-static  UInt_t l_err_cha [MAX_CHA];
-static  UInt_t l_prev_err_ssy [MAX_CHA];
-static  UInt_t l_prev_err_sfp [MAX_CHA];
-static  UInt_t l_prev_err_tam [MAX_CHA];
-static  UInt_t l_prev_err_cha [MAX_CHA];
+static  UInt_t l_err_ssy [MAX_CHA_old];
+static  UInt_t l_err_sfp [MAX_CHA_old];
+static  UInt_t l_err_tam [MAX_CHA_old];
+static  UInt_t l_err_cha [MAX_CHA_old];
+static  UInt_t l_prev_err_ssy [MAX_CHA_old];
+static  UInt_t l_prev_err_sfp [MAX_CHA_old];
+static  UInt_t l_prev_err_tam [MAX_CHA_old];
+static  UInt_t l_prev_err_cha [MAX_CHA_old];
 static  UInt_t l_num_err;
 static  UInt_t l_prev_num_err;
 
