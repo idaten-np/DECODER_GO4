@@ -941,6 +941,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
                             h_tim_2 [l_ssy_idx][l_sfp_idx][l_tam_idx][l_ch_ix-1]->Fill(l_ch_tim);
                             //fprintf(stdout,"h_tim_2 [l_ssy_idx%u][l_sfp_idx%u][l_tam_idx%u][l_ch_ix-1 %d]->Fill(l_ch_tim%d);\n", l_ssy_idx,l_sfp_idx,l_tam_idx,l_ch_ix-1,l_ch_tim);
                         }
+                        if(l_ch_ix==0)
+                        {
+                            h_tim_2 [l_ssy_idx][l_sfp_idx][l_tam_idx][MAX_CHA_tam-1]->Fill(l_ch_tim);
+                        }
 
                         //printf ("l_prev_num_err: %d \n", l_prev_num_err);
                         if (l_prev_err_catch == 1)
@@ -1126,21 +1130,23 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
         {
             fprintf(stdout,"fPar->useOldCalibration\n"); fflush(stdout);
             fprintf(fd_out,"fPar->useOldCalibration\n"); fflush(fd_out);
-            for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+            /*for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
             {
                 for(l_i=0; l_i<N_BIN_T; l_i++)
                     d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = ((double) h_sum_2[iSSY][iSFP][iTAM][iCHA]->GetBinContent(l_i+1) / (double) h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()) * CYCLE_TIME;
-            }
+            }*/
         }
-        else
+        //else
         {
             for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
             {
                 Int_t sum=0;
                 //fprintf(stdout,"h_tim_2[iSSY%u][iSFP%u][iTAM%u][iCHA%d]->GetEntries()==%.0f\n",iSSY,iSFP,iTAM,iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
-                if(h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()==0)
+                if(h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()<N_BIN_T*4) // 600*4
                 {
-                    for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = 0.;
+                    fprintf(stdout, "not enought entries to calibrate SSY%u SFP%u TAM%u TCHA%d %0.f ... set as 0.\n", iSSY, iSFP, iTAM, iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
+                    for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = 0;
+                    //for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = (Double_t)(l_i * CYCLE_TIME)/N_BIN_T;
                     //d_finetimecal[iSSY][iSFP][iTAM][iCHA]={0};
                     continue;
                 }
