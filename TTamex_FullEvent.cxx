@@ -38,19 +38,41 @@ TTamex_FullEvent::~TTamex_FullEvent()
 
 void TTamex_FullEvent::Clear(Option_t *t)
 {
-      for (Int_t l_k = 0; l_k < MAX_CHA_old_AN_DIFF; l_k++)
+      /*for (Int_t l_k = 0; l_k < MAX_CHA_old_AN_DIFF; l_k++)
       {
         //fTimeStamp[l_k].clear();
 	      fTimeDiff[l_k]= 30 * (l_k+1) * RESET_VAL; // JAM should be out of bounce for regular data
-      }
+      }*/
 
-      SSY            	.clear();
-      SFP            	.clear();
-      TAM            	.clear();
-      CHA            	.clear();
-      Edge_type      	.clear();
-      Coarse_ct      	.clear();
-      Fine_time      	.clear();
+      //fprintf(stdout, "flip_SSY.size() %zu\n",flip_SSY.size()); fflush(stdout);
+      flip_SSY            	.clear();
+      flip_SFP            	.clear();
+      flip_TAM            	.clear();
+      flip_TCHA            	.clear();
+      flip_Edge_type      	.clear();
+      flip_Coarse_ct      	.clear();
+      flip_TDL             	.clear();
+
+      /*fprintf(stdout, "hit_SSY.size() %zu\n",hit_SSY.size()); 
+      fprintf(stdout, "hit_SFP.size() %zu\n",hit_SFP.size()); 
+      fprintf(stdout, "hit_TAM.size() %zu\n",hit_TAM.size()); 
+      fprintf(stdout, "hit_PCHA.size() %zu\n",hit_PCHA.size()); 
+      fprintf(stdout, "hit_STOT.size() %zu\n",hit_STOT.size()); 
+      fprintf(stdout, "hit_STle.size() %zu\n",hit_STle.size()); 
+      fprintf(stdout, "hit_FTOT.size() %zu\n",hit_FTOT.size()); 
+      fprintf(stdout, "hit_FTle.size() %zu\n",hit_FTle.size()); 
+      fprintf(stdout, "hit_TTS.size() %zu\n",hit_TTS.size()); fflush(stdout);*/
+      hit_SSY               .clear();
+      hit_SFP               .clear();
+      hit_TAM               .clear();
+      hit_PCHA              .clear();
+      hit_STOT              .clear();
+      hit_STle              .clear();
+      hit_FTOT              .clear();
+      hit_FTle              .clear();
+      hit_TTS               .clear();
+
+
 
 }
 

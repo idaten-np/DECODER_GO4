@@ -36,27 +36,54 @@ class TTamex_FullEvent : public TGo4EventElement {
       void Clear(Option_t *t="");
       
       /* add new timstamp to buffer*/
-      void SetTimeDiff(UChar_t channel, Double_t value)
+     /* void SetTimeDiff(UChar_t channel, Double_t value)
       {
         if(channel>=MAX_CHA_old_AN_DIFF) return;
         fTimeDiff[channel]=value;
+        fprintf(stdout,"fTimeDiff[%d]=%.0f;\n", (int) channel, value); fflush(stdout);
       }
       Double_t GetTimeDiff(UInt_t channel)
       {
 	      if(channel>=MAX_CHA_old_AN_DIFF) return -1; // TODO: proper error handling maybe..
 	      return fTimeDiff[channel];
+      }*/
+
+      void AddFlipTime(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t tcha, Int_t edge_type, Int_t coarse_ct, Int_t tdl)
+      {
+	      flip_SSY       	.push_back(ssy);
+	      flip_SFP       	.push_back(sfp);
+	      flip_TAM       	.push_back(tam);
+	      flip_TCHA     	.push_back(tcha);
+	      flip_Edge_type 	.push_back(edge_type);
+	      flip_Coarse_ct 	.push_back(coarse_ct);
+	      flip_TDL 	      .push_back(tdl);
+        //printf("AddFlipTime size %lu capacity %lu\n", flip_SSY.size(), flip_SSY.capacity());
       }
 
-      void AddFlipTime(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t cha, Int_t edge_type, Int_t coarse_ct, Int_t fine_time)
+      void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t tts )
       {
-	      SSY       	.push_back(ssy);
-	      SFP       	.push_back(sfp);
-	      TAM       	.push_back(tam);
-	      CHA       	.push_back(cha);
-	      Edge_type 	.push_back(edge_type);
-	      Coarse_ct 	.push_back(coarse_ct);
-	      Fine_time 	.push_back(fine_time);
-		//printf("AddFlipTime size %lu capacity %lu\n", SSY.size(), SSY.capacity());
+          hit_SSY   .push_back( ssy );
+          hit_SFP   .push_back( sfp );
+          hit_TAM   .push_back( tam );
+          hit_PCHA  .push_back( pcha );
+          hit_STOT  .push_back( stot );
+          hit_STle  .push_back( stle );
+          hit_FTOT  .push_back( ftot );
+          hit_FTle  .push_back( ftle );
+          hit_TTS   .push_back( tts );
+
+          /*fprintf(stdout,"size %zu\n", hit_SSY.size());
+          fprintf(stdout,"hit_SSY   %u\n"  , hit_SSY   .back());
+          fprintf(stdout,"hit_SFP   %u\n"  , hit_SFP   .back());
+          fprintf(stdout,"hit_TAM   %u\n"  , hit_TAM   .back());
+          fprintf(stdout,"hit_PCHA  %d\n"  , hit_PCHA  .back());
+          fprintf(stdout,"hit_STOT  %.0f\n", hit_STOT  .back());
+          fprintf(stdout,"hit_STle  %.0f\n", hit_STle  .back());
+          fprintf(stdout,"hit_FTOT  %.0f\n", hit_FTOT  .back());
+          fprintf(stdout,"hit_FTle  %.0f\n", hit_FTle  .back());
+          fprintf(stdout,"hit_TTS   %.0f\n", hit_TTS   .back());
+          fprintf(stdout,"\n"); fflush(stdout);*/
+
       }
 
 
@@ -68,17 +95,26 @@ class TTamex_FullEvent : public TGo4EventElement {
 //        }
 
    private:
-      Double_t fTimeDiff[MAX_CHA_old_AN_DIFF];
-   public: 
-      std::vector<UInt_t> 	SSY;
-      std::vector<UInt_t> 	SFP;
-      std::vector<UInt_t> 	TAM;
-      std::vector<Int_t> 	CHA;
-      std::vector<Int_t> 	Edge_type;
-      std::vector<Int_t> 	Coarse_ct;
-      std::vector<Int_t> 	Fine_time;
+      //Double_t fTimeDiff[MAX_CHA_old_AN_DIFF];
+      std::vector<UInt_t> 	flip_SSY;
+      std::vector<UInt_t> 	flip_SFP;
+      std::vector<UInt_t> 	flip_TAM;
+      std::vector<Int_t>  	flip_TCHA;
+      std::vector<Int_t> 	  flip_Edge_type;
+      std::vector<Int_t> 	  flip_Coarse_ct;
+      std::vector<Int_t> 	  flip_TDL;
 
+      std::vector<UInt_t> 	hit_SSY;
+      std::vector<UInt_t> 	hit_SFP;
+      std::vector<UInt_t> 	hit_TAM;
+      std::vector<Int_t>  	hit_PCHA;
+      std::vector<Double_t> hit_STOT;
+      std::vector<Double_t> hit_STle;
+      std::vector<Double_t> hit_FTOT;
+      std::vector<Double_t> hit_FTle;
+      std::vector<Double_t> hit_TTS;
 
+      
 
    ClassDef(TTamex_FullEvent,1)
 };

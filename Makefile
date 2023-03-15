@@ -25,6 +25,8 @@ EXAMPSIMP_DO          = $(EXAMPSIMP_DICT).$(ObjSuf)
 EXAMPSIMP_H           = $(filter-out $(EXAMPSIMP_DH) $(EXAMPSIMP_LINKDEF), $(wildcard $(EXAMPSIMP_DIR)/*.$(HedSuf)))
 EXAMPSIMP_S           = $(filter-out $(EXAMPSIMP_DS), $(wildcard $(EXAMPSIMP_DIR)/*.$(SrcSuf)))
 EXAMPSIMP_O           = $(EXAMPSIMP_S:.$(SrcSuf)=.$(ObjSuf))
+EXAMPSIMP_H :=$(filter-out ./test.h, $(EXAMPSIMP_H))
+EXAMPSIMP_S :=$(filter-out ./test.C, $(EXAMPSIMP_S))
 
 EXAMPSIMP_DEP         = $(EXAMPSIMP_O:.$(ObjSuf)=.$(DepSuf))
 EXAMPSIMP_DDEP        = $(EXAMPSIMP_DO:.$(ObjSuf)=.$(DepSuf))
