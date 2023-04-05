@@ -22,6 +22,7 @@ Input        =
 should_transfer_files   = YES
 transfer_input_files = $inputpath/$inputfile, TTamex_FullProc.h, G__Tamex_Full.cxx, TTamex_FullParam.o, TTamex_FullEvent.o, TTamex_FullProc.o, G__Tamex_Full.o, libGo4UserAnalysis.so, libGo4UserAnalysis_rdict.pcm, libGo4UserAnalysis.rootmap, set_TamexControl.C, Go4AutoSave.root
 transfer_output_files=$outputfile
+transfer_output_remaps="$outputfile = ROOT/$outputfile"
 Universe     = vanilla
 GetEnv       = True
 Request_cpus = 1
