@@ -529,6 +529,11 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
     uint32_t    *pl_se_dat;
     uint32_t    *pl_tmp;
 
+#ifdef WR_TIME_STAMP
+	uint32_t	l_wr_id;
+	ULong64_t	l_wr_value;
+	ULong64_t	l_wr_ts;
+#endif // WR_TIME_STAMP
     UInt_t     l_padd;
     UInt_t     l_trig_type;
     UInt_t     l_ssy_idx;
@@ -735,47 +740,63 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
         pl_se_dat = (uint32_t *)psubevt->GetDataField();
         pl_tmp = pl_se_dat;
-        /*
+        
 #ifdef WR_TIME_STAMP
-        // 5 first 32 bits must be white rabbit time stamp
-        l_dat = *pl_tmp++;
-        if (l_dat != SUB_SYSTEM_ID)
-        {
-        printf ("ERROR>> 1. data word is not sub-system id: %d \n");
-        printf ("should be: 0x%x, but is: 0x%x\n", SUB_SYSTEM_ID, l_dat);
-        }
+		// 5 first 32 bits must be white rabbit time stamp
+		l_dat = *pl_tmp++;
+		if (l_dat != SUB_SYSTEM_ID)
+		{
+			printf ("ERROR>> 1. data word is not sub-system id: %d \n");
+			printf ("should be: 0x%x, but is: 0x%x\n", SUB_SYSTEM_ID, l_dat);
+			goto bad_event;
+		}
+		l_wr_ts=0;
 
-        if (l_dat != SUB_SYSTEM_ID)
-        {
-        goto bad_event;
-        }
+		l_dat = *pl_tmp++;
+		l_wr_id = l_dat>>16;
+		if (l_wr_id !=TS__ID_L16)
+		{
+			printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: %d \n");
+			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_L16, l_wr_id);
+		}
+		l_wr_value = (l_dat & 0x0000ffff);
+		l_wr_ts += l_wr_value << 0;
 
-        l_dat = (*pl_tmp++) >> 16;
-        if (l_dat != TS__ID_L16)
-        {
-        printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: %d \n");
-        printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_L16, l_dat);
-        }
-        l_dat = (*pl_tmp++) >> 16;
-        if (l_dat != TS__ID_M16)
-        {
-        printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: %d \n");
-        printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_M16, l_dat);
-        }
-        l_dat = (*pl_tmp++) >> 16;
-        if (l_dat != TS__ID_H16)
-        {
-        printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: %d \n");
-        printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_dat);
-        }
-        l_dat = (*pl_tmp++) >> 16;
-        if (l_dat != TS__ID_X16)
-        {
-        printf ("ERROR>> 4. data word does not contain 48-63 16bit identifier: %d \n");
-        printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_dat);
-        }
+		l_dat = *pl_tmp++;
+		l_wr_id = l_dat>>16;
+		if (l_wr_id != TS__ID_M16)
+		{
+			printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: %d \n");
+			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_M16, l_wr_id);
+		}
+		l_wr_value = (l_dat & 0x0000ffff);
+		l_wr_ts += l_wr_value << 16;
+
+		l_dat = *pl_tmp++;
+		l_wr_id = l_dat>>16;
+		if (l_wr_id != TS__ID_H16)
+		{
+			printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: %d \n");
+			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_wr_id);
+		}
+		l_wr_value = (l_dat & 0x0000ffff);
+		l_wr_ts += l_wr_value << 32;
+
+		l_dat = *pl_tmp++;
+		l_wr_id = l_dat>>16;
+		if (l_wr_id != TS__ID_X16)
+		{
+			printf ("ERROR>> 4. data word does not contain 48-63 16bit identifier: %d \n");
+			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_wr_id);
+		}
+		l_wr_value = (l_dat & 0x0000ffff);
+		l_wr_ts += l_wr_value << 48;
+
+		fprintf(stdout,"l_wr_ts = 0x%llx = %llu\n", l_wr_ts, l_wr_ts);
+		fOutput->Set_WR_TS(l_wr_ts);
+
 #endif // WR_TIME_STAMP
-         */
+
         l_dat_len = psubevt->GetDlen();
         l_dat_len_byte = (l_dat_len - 2) * 2; 
         //printf("l_dat_len %d l_dat_len_byte %d \n", l_dat_len, l_dat_len_byte);

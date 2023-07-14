@@ -17,16 +17,18 @@
 #ifndef TUNPACKPROCESSOR_H
 #define TUNPACKPROCESSOR_H
 
-//#define WR_TIME_STAMP     1   // white rabbit time stamp is head of data
+#define WR_TIME_STAMP     1   // white rabbit time stamp is head of data
+#ifdef WR_TIME_STAMP
+#endif // WR_TIME_STAMP
 
 #define MAX_SPEZIAL 1000000000
 
 #ifdef WR_TIME_STAMP
-#define SUB_SYSTEM_ID      0x400
-#define TS__ID_L16         0x3e1
-#define TS__ID_M16         0x4e1
-#define TS__ID_H16         0x5e1
-#define TS__ID_X16         0x6e1
+#define SUB_SYSTEM_ID      0x0100
+#define TS__ID_L16         0x03e1
+#define TS__ID_M16         0x04e1
+#define TS__ID_H16         0x05e1
+#define TS__ID_X16         0x06e1
 #endif // WR_TIME_STAMP
 
 #define STATISTIC 200000

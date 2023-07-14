@@ -34,6 +34,13 @@ class TTamex_FullEvent : public TGo4EventElement {
 
       /** Method called by the framework to clear the event element. */
       void Clear(Option_t *t="");
+
+#ifdef WR_TIME_STAMP
+	  void Set_WR_TS(ULong64_t ts)
+	  {
+		  WR_TS=ts;
+	  }
+#endif // WR_TIME_STAMP
       
       /* add new timstamp to buffer*/
      /* void SetTimeDiff(UChar_t channel, Double_t value)
@@ -95,6 +102,9 @@ class TTamex_FullEvent : public TGo4EventElement {
 //        }
 
    private:
+#ifdef WR_TIME_STAMP
+   		ULong64_t WR_TS;
+#endif // WR_TIME_STAMP
       //Double_t fTimeDiff[MAX_CHA_old_AN_DIFF];
       std::vector<UInt_t> 	flip_SSY;
       std::vector<UInt_t> 	flip_SFP;

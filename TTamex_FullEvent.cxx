@@ -38,6 +38,9 @@ TTamex_FullEvent::~TTamex_FullEvent()
 
 void TTamex_FullEvent::Clear(Option_t *t)
 {
+#ifdef WR_TIME_STAMP
+		WR_TS=0;
+#endif // WR_TIME_STAMP
       /*for (Int_t l_k = 0; l_k < MAX_CHA_old_AN_DIFF; l_k++)
       {
         //fTimeStamp[l_k].clear();
