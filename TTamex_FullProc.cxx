@@ -183,6 +183,15 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
                     //N_DELTA_T*2/1000, -N_DELTA_T*5, N_DELTA_T*5,
                     );
         }      
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+        {
+            sprintf (chis,"FTle-TTS/SUB %d/SFP %d/TAMEX %2d/FTle-TTS SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+            sprintf (chead,"Fle-TTS");
+            h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
+                    COARSE_CT_RANGE/4, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
+                    //COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/4, COARSE_CT_RANGE*CYCLE_TIME/4,
+                    );
+        }      
  
 
         // box histograms for test channels only
@@ -792,7 +801,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_value = (l_dat & 0x0000ffff);
 		l_wr_ts += l_wr_value << 48;
 
-		fprintf(stdout,"l_wr_ts = 0x%llx = %llu\n", l_wr_ts, l_wr_ts);
+		//fprintf(stdout,"l_wr_ts = 0x%llx = %llu\n", l_wr_ts, l_wr_ts);
 		fOutput->Set_WR_TS(l_wr_ts);
 
 #endif // WR_TIME_STAMP
@@ -1298,6 +1307,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
                                 v_TOT[jtot], (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot],
                                 v_TTS[itot]
                                 );
+						h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA_phy]->Fill((Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot]);
                     }
                 }
             }

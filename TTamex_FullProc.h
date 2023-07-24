@@ -166,6 +166,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 		TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_STOT_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+		TH1 *h1_le_tts[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 
 		TGo4Picture      *fPicture;
