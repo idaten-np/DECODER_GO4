@@ -1188,7 +1188,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				//fprintf(stdout,"h_tim_2[iSSY%u][iSFP%u][iTAM%u][iCHA%d]->GetEntries()==%.0f\n",iSSY,iSFP,iTAM,iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
 				if(h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()<N_BIN_T*4) // 600*4
 				{
-					fprintf(stdout, "not enought entries to calibrate SSY%u SFP%u TAM%u TCHA%d %0.f ... set as 0.\n", iSSY, iSFP, iTAM, iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
+					fprintf(stdout, "not enough entries to calibrate SSY%u SFP%u TAM%u TCHA%d %0.f ... set as 0.\n", iSSY, iSFP, iTAM, iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
 					for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = 0;
 					//for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = (Double_t)(l_i * CYCLE_TIME)/N_BIN_T;
 					//d_finetimecal[iSSY][iSFP][iTAM][iCHA]={0};
