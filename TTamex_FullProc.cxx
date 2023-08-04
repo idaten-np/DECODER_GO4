@@ -156,6 +156,19 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			sprintf (chead,"CALIB SUM");
 			h_sum_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		{
+			sprintf (chis,"MULTIPLICITY0/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY0 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"MULTIPLICITY0");
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][0] = MakeTH1 ('I', chis, chead, 10, 0, 10);
+			sprintf (chis,"MULTIPLICITY1/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY1 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"MULTIPLICITY1");
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1] = MakeTH1 ('I', chis, chead, 10, 0, 10);
+			sprintf (chis,"MULTIPLICITY2/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY2 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"MULTIPLICITY2");
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2] = MakeTH1 ('I', chis, chead, 10, 0, 10);
+		}
+
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
@@ -586,6 +599,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	Int_t     l_hitpat   [MAX_CHA_old_AN];
 	Int_t     l_hct      [MAX_CHA_old_AN];            // hit counter/index
 
+	Int_t	l_hct2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3];
+
 	std::vector<UInt_t> 	v_SSY;
 	std::vector<UInt_t> 	v_SFP;
 	std::vector<UInt_t> 	v_TAM;
@@ -722,6 +737,12 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_hct[l_i]    = 0;
 		l_hitpat[l_i] = 0;
 		h_hitpat[l_i]->Fill (-2, 1);
+	}
+	for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+	{
+		l_hct2[iSSY][iSFP][iTAM][iCHA][0]=0;
+		l_hct2[iSSY][iSFP][iTAM][iCHA][1]=0;
+		l_hct2[iSSY][iSFP][iTAM][iCHA][2]=0;
 	}
 	v_SSY       	.clear();
 	v_SFP       	.clear();
@@ -961,6 +982,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						v_Coarse_ct 	.push_back(l_coarse_ct);
 						v_tdl        	.push_back(l_ch_tim);
 
+
 						/*if(fCalibrationDone)
 						  {
 						  fprintf(stdout,"v_SSY        %u ", v_SSY       	.back());
@@ -983,10 +1005,12 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 							h_tim_2 [l_ssy_idx][l_sfp_idx][l_tam_idx][l_ch_ix-1]->Fill(l_ch_tim);
 							//fprintf(stdout,"h_tim_2 [l_ssy_idx%u][l_sfp_idx%u][l_tam_idx%u][l_ch_ix-1 %d]->Fill(l_ch_tim%d);\n", l_ssy_idx,l_sfp_idx,l_tam_idx,l_ch_ix-1,l_ch_tim);
 						}
-						if(l_ch_ix==0)
+						if(l_ch_ix!=0) l_hct2[l_ssy_idx][l_sfp_idx][l_tam_idx][l_ch_ix-1][l_edge_type]++;
+						else if(l_ch_ix==0)
 						{
 							h_cct [l_ssy_idx][l_sfp_idx][l_tam_idx][MAX_CHA_tam-1]->Fill(l_coarse_ct);
 							h_tim_2 [l_ssy_idx][l_sfp_idx][l_tam_idx][MAX_CHA_tam-1]->Fill(l_ch_tim);
+							l_hct2[l_ssy_idx][l_sfp_idx][l_tam_idx][MAX_CHA_tam-1][l_edge_type]++;
 						}
 
 						//printf ("l_prev_num_err: %d \n", l_prev_num_err);
@@ -1255,6 +1279,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 					iCHA_tam = v_TCHA[i];
 					iCHA_phy = iCHA_tam/2;
 					SlowFast = iCHA_tam%2; // 0 for fast, 1 for slow
+					l_hct2[iSSY][iSFP][iTAM][iCHA_tam][2]++;
 
 					l_coarse_diff = -v_Coarse_ct[i] + v_Coarse_ct[j];
 					if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
@@ -1321,6 +1346,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								v_TTS[itot]
 								);
 						Double_t ftle_tts = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
+
 						if(ftle_tts < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle_tts >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts -= CYCLE_TIME*COARSE_CT_RANGE;
 						h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA_phy]->Fill(ftle_tts);
@@ -1331,7 +1357,13 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		}
 
 
-
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		{
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][0]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][0]);
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][1]);
+			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][2]);
+		}
+	
 
 
 
