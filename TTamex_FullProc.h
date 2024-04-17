@@ -45,29 +45,29 @@
 #define MAX_CHA_old       MAX_CHA_old_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
 #define MAX_CHA_phy 16
 #define MAX_CHA_tam MAX_CHA_phy *2 +1 // last for TTS
-									  //////////////
-									  //#define MAX_CHA_old_INPUT  32                // A) maximum physical input channels per module. must be modulo 4
-									  //#define MAX_CHA_old        MAX_CHA_old_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
+//////////////
+//#define MAX_CHA_old_INPUT  32                // A) maximum physical input channels per module. must be modulo 4
+//#define MAX_CHA_old        MAX_CHA_old_INPUT * 2 // B) leading egdes + trailing edges + qtc trailing edges
 
-									  // it seems that only "leading" edge bit is set for 0-47 channels
-									  // therefore "MAX_CHA_old_INPUT 48" and only "MAX_CHA_old_INPUT * 1"   
-									  // this has changed to previous version and comments A) and B) are wrong
-									  // so called 17th channel should would appear according to chahit as
-									  // channel nr 48, therefore 49 channels in total
+// it seems that only "leading" edge bit is set for 0-47 channels
+// therefore "MAX_CHA_old_INPUT 48" and only "MAX_CHA_old_INPUT * 1"   
+// this has changed to previous version and comments A) and B) are wrong
+// so called 17th channel should would appear according to chahit as
+// channel nr 48, therefore 49 channels in total
 
-									  //#define N_DEEP_AN      4                // deep analysis for first N_DEEP_AN channels specified below.
-									  // must be even nr.
+//#define N_DEEP_AN      4                // deep analysis for first N_DEEP_AN channels specified below.
+// must be even nr.
 
 #define N_DEEP_AN      0  // JAM 7-june-2022: no deep correlations when we use tree output
 
 #define MAX_CHA_old_AN    24                // total nr. of channels analyzed. must be modulo 4
-											//#define MAX_CHA_old_AN    64                // total nr. of channels analyzed. must be modulo 4
+//#define MAX_CHA_old_AN    64                // total nr. of channels analyzed. must be modulo 4
 #define MAX_HITS       1                // max. number of hits per channel accepted
-										//#define MAX_HITS      10                // max. number of hits per channel accepted
+//#define MAX_HITS      10                // max. number of hits per channel accepted
 
-										// select 64 channels to be analyzed
-										// test index:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
-										//               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+// select 64 channels to be analyzed
+// test index:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+//               |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 #define SSY_ID { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 #define SFP_ID { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}//, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
@@ -80,8 +80,8 @@
 #define CHA_ID { 1,34, 2,35,21,54,22,55, 3,36, 4,37, 0, 1, 0,21, 0, 3, 1,21,21, 3, 3, 1}//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } // regular
 
 
-#define N_CAL_EVT               (ULong64_t) 36*50000
 //#define N_CAL_EVT               (ULong64_t) 200000
+#define N_CAL_EVT               (ULong64_t) 36*50000
 
 #define N_PHY_TREND_PRINT       (ULong64_t) 1000000
 
@@ -163,6 +163,9 @@ class TTamex_FullProc : public TGo4EventProcessor {
 		TH2   *h_p_tota_vs_a;
 		TH2   *h_p_totb_vs_b;
 		TH2   *h_p_diff_ba_sum_ab;                
+
+		TH2 *h2_PCHA_STOT[MAX_SSY][MAX_SFP][MAX_TAM];
+		TH2 *h2_PCHA_FTOT[MAX_SSY][MAX_SFP][MAX_TAM];
 
 		TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];

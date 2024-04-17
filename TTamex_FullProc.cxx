@@ -146,13 +146,13 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"CALIB TIME/SUB %d/SFP %d/TAMEX %2d/CALIB TIME SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%2d/CHA%2d/CALIB TIME SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB TIME");
 			h_tim_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"CALIB SUM/SUB %d/SFP %d/TAMEX %2d/CALIB SUM SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%2d/CHA%2d/CALIB SUM SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB SUM");
 			h_sum_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
@@ -173,38 +173,26 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/SlowTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
-			//sprintf (chis,"SlowTOT/SUB %d/SFP %d/TAMEX %2d/SlowTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"SlowTOT");
 			h1_STOT[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4
-					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/4, COARSE_CT_RANGE*CYCLE_TIME/4
-					//N_DELTA_T*2/1000, -COARSE_CT_RANGE*CYCLE_TIME/4, COARSE_CT_RANGE*CYCLE_TIME/4,
-					//N_DELTA_T*2/1000, -N_DELTA_T*5, N_DELTA_T*5,
 					);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/FastTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
-			//sprintf (chis,"FastTOT/SUB %d/SFP %d/TAMEX %2d/FastTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"FastTOT");
 			h1_FTOT[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
-					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/10
-					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/4, COARSE_CT_RANGE*CYCLE_TIME/4,
-					//N_DELTA_T*2/1000, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME,
-					//N_DELTA_T*2/1000, -N_DELTA_T*5, N_DELTA_T*5
+					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/STOT_FTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
-			//sprintf (chis,"STOT_FTOT/SUB %d/SFP %d/TAMEX %2d/STOT_FTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"h2_STOT_FTOT");
 			h2_STOT_FTOT[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
 					COARSE_CT_RANGE/4/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4,
-					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/16
-					//COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/10
-					//N_DELTA_T*2/1000, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME,
-					//N_DELTA_T*2/1000, -N_DELTA_T*5, N_DELTA_T*5,
+					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
@@ -212,11 +200,28 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/Fle-TTS SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Fle-TTS");
 			h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
-					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
 					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
 					);
 		}      
-
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/PCHA_SlowTOT SUB %d SFP %d TAM %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
+			sprintf (chead,"PCHA_SlowTOT");
+			h2_PCHA_STOT[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
+					MAX_CHA_phy, 0, MAX_CHA_phy, 
+					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4
+					);
+		}      
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/PCHA_FastTOT SUB %d SFP %d TAM %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
+			sprintf (chead,"PCHA_FastTOT");
+			h2_PCHA_FTOT[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
+					MAX_CHA_phy, 0, MAX_CHA_phy, 
+					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
+					);
+		}      
+	
 
 		// box histograms for test channels only
 		for (l_i=0; l_i<MAX_CHA_old_AN; l_i++)
@@ -1308,11 +1313,15 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 
 					if(SlowFast)
-						//h1_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(l_coarse_diff*CYCLE_TIME);
+					{
 						h1_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
+						h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
+					}
 					else
-						//h1_FTOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(l_coarse_diff*CYCLE_TIME);
+					{
 						h1_FTOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
+						h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
+					}
 					break;
 				}
 			}
@@ -1346,7 +1355,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								v_TTS[itot]
 								);
 						Double_t ftle_tts = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
-
 						if(ftle_tts < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle_tts >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts -= CYCLE_TIME*COARSE_CT_RANGE;
 						h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA_phy]->Fill(ftle_tts);

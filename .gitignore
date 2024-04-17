@@ -7,6 +7,7 @@ libGo4UserAnalysis.rootmap
 
 *.lmd
 *.root
+go4log.txt
 tamex1_tdc_time_diff.txt
 log
 root
