@@ -156,6 +156,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			sprintf (chead,"CALIB SUM");
 			h_sum_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
+#ifdef IDATEN_MONITOR
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"MULTIPLICITY0/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY0 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
@@ -221,6 +222,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}      
+#endif // IDATEN_MONITOR
 	
 
 		// box histograms for test channels only
@@ -1311,7 +1313,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 					  fprintf(stdout,"v_branch    %d ",(int) v_branch    .back());
 					  fprintf(stdout,"\n");*/
 
-
+#ifdef IDATEN_MONITOR
 					if(SlowFast)
 					{
 						h1_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
@@ -1322,6 +1324,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						h1_FTOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
 						h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
 					}
+#endif // IDATEN_MONITOR
 					break;
 				}
 			}
