@@ -42,7 +42,7 @@
 #define COARSE_CT_RANGE  0x800  // 11 bits
 
 #define MAX_SSY        1                // maximum number of sub-systems (readout pcs in nxm system)
-#define MAX_SFP        4
+#define MAX_SFP        2
 #define MAX_TAM        7                // maximum febex/tamex per sfp
 
 #define MAX_CHA_old_INPUT 33                // A) maximum physical input channels per module. must be modulo 4

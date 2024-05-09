@@ -1,0 +1,143 @@
+// Automatically generated startup script
+// Do not change it!
+
+go4->SetMainWindowState(4,"000000ff00000000fd0000000200000000000001250000029efc0200000001fb0000001600420072006f00770073006500720044006f0063006b01000000770000029e0000007a00ffffff000000030000078000000082fc0100000001fc00000000000007800000045900fffffffa000000000200000003fb00000016004c006f00670049006e0066006f0044006f0063006b0100000000ffffffff0000005300fffffffb0000001a004d006200730056006900650077006500720044006f0063006b0100000000ffffffff0000006500fffffffb0000001e0044004100420043004d006f006e00690074006f00720044006f0063006b0000000279000000ce0000000000000000000006570000029e00000004000000040000000800000008fc0000000800000002000000040000001600460069006c00650054006f006f006c0042006100720100000000ffffffff0000000000000000000000160047006f00340054006f006f006c007300420061007201000000e7ffffffff00000000000000000000001e0041006e0061006c00790073006900730054006f006f006c004200610072010000022b0000025800000000000000000000001a0044006900760069006400650050006100640044006f0063006b0100000483000000e40000000000000000000000020000000000000002000000020000002400420072006f0077007300650072004f007000740069006f006e00730044006f0063006b01000000000000010200000000000000000000001e0044007200610077004f007000740069006f006e00730044006f0063006b01000001020000037e00000000000000000000000200000003000000240048006900730044007200610077004f007000740069006f006e00730044006f0063006b0100000000ffffffff0000000000000000000000180047006f0034005300740079006c00650044006f0063006b0100000153000004b1000000000000000000000020005300630061006c0065004f007000740069006f006e00730044006f0063006b01000005d800000282000000000000000000000002000000010000002c0041006e0061006c00790073006900730043006f006d006d0061006e00640054006f006f006c0042006100720000000256ffffffff0000000000000000000000030000000000000003000000010000001e0043006f006d006d0061006e0064004c0069006e00650044006f0063006b0000000000000004b1000000000000000000000003000000010000001c00540072006500650056006900650077006500720044006f0063006b0000000000000004b10000000000000000");
+go4->SetMainWindowGeometry(4,"01d9d0cb00030000000000000000001b0000077f000003f0000000180000003800000511000002c50000000002000000078000000000000000330000077f000003f0");
+go4->LoadLibrary("$ROOTSYS/lib/libtbbmalloc.so.2");
+go4->LoadLibrary("/LynxOS/mbsusr/mbsdaq/Go4_IDATEN_monitor/libGo4UserAnalysis.so");
+go4->LoadLibrary("$ROOTSYS/lib/libGraf3d.so");
+go4->LoadLibrary("$ROOTSYS/lib/libROOTVecOps.so");
+go4->LoadLibrary("$ROOTSYS/lib/libTreePlayer.so");
+go4->LoadLibrary("$ROOTSYS/lib/libRint.so");
+go4->LoadLibrary("$ROOTSYS/lib/libPostscript.so");
+go4->LoadLibrary("$ROOTSYS/lib/libPhysics.so");
+go4->LoadLibrary("$ROOTSYS/lib/libROOTDataFrame.so");
+go4->LoadLibrary("$GO4SYS/lib/libGo4Analysis.so");
+go4->LoadLibrary("$ROOTSYS/lib/libROOTNTuple.so");
+
+go4->LaunchAnalysis("tamex4_khala_KU", ".", "/LynxOS/mbsusr/mbsdaq/Go4_IDATEN_monitor/libGo4UserAnalysis.so", "localhost", Go4_sh, Go4_qt, Go4_lib);
+go4->WaitAnalysis(300);
+
+// configuration of analysis
+go4->AnalysisAutoSave("Go4AutoSave.root", 500, 5, kTRUE, kFALSE);
+go4->AnalysisConfigName("Go4AnalysisPrefs.root");
+
+// step Analysis
+go4->ConfigStep("Analysis", kTRUE, kTRUE, kFALSE);
+go4->StepMbsStreamSource("Analysis", "LIPC-1", 1);
+go4->StepFileStore("Analysis", "NoOutputDefined", kTRUE, 32000, 99, 5, 10000);
+
+go4->SubmitAnalysisConfig(20);
+
+go4->SetAnalysisConfigMode(-1);
+go4->SetAnalysisTerminalMode(0);
+
+go4->StartAnalysis();
+
+// in some analysis one requires to wait several seconds before new histograms appears
+// go4->Wait(1);
+go4->RefreshNamesList();
+
+TGo4Picture *pic1 = new TGo4Picture("pic1", "temporary object to setup viewpanel");
+pic1->SetCrosshair(false);
+pic1->SetLogScale(2, 1);
+pic1->SetRangeX(0.5, 15.5);
+pic1->SetRangeY(1250, 2.55875e+06);
+pic1->SetRangeZ(0, 37.8);
+pic1->SetLineAtt(1, 1, 1, -1);
+pic1->SetFillAtt(10, 1001, -1);
+pic1->SetHisStats(true);
+pic1->SetStatsAttr(0.78, 0.775, 0.98, 0.935, 11111111, "6.4g", 0, "5.4g");
+pic1->SetHisTitle(true);
+pic1->SetTitleAttr(0.15, 0.932662, 0.85, 0.995);
+pic1->SetTitleTime(true);
+pic1->SetTitleDate(true);
+pic1->SetTitleItem(true);
+pic1->SetAutoScale(true);
+pic1->SetApplyToAll(true);
+pic1->SetAutoZoom(false);
+pic1->SetXYRatioOne(false);
+pic1->SetPadAtt(0, 2, 0, 0, 30, 30, 0, 0);
+pic1->SetXAxisAttTime(0, "%H:%M:%S%F1995-01-01 00:00:00s0", -1);
+pic1->SetDivision(1, 3);
+pic1->Pic(0,0)->SetLogScale(2, 1);
+pic1->Pic(0,0)->SetRangeX(0.5, 15.5);
+pic1->Pic(0,0)->SetRangeY(1250, 2.55875e+06);
+pic1->Pic(0,0)->SetRangeZ(0, 4148.55);
+pic1->Pic(0,0)->SetLineAtt(1, 1, 1, -1);
+pic1->Pic(0,0)->SetFillAtt(10, 1001, -1);
+pic1->Pic(0,0)->SetHisStats(true);
+pic1->Pic(0,0)->SetStatsAttr(0.78, 0.775, 0.98, 0.935, 11111111, "6.4g", 0, "5.4g");
+pic1->Pic(0,0)->SetHisTitle(true);
+pic1->Pic(0,0)->SetTitleAttr(0.15, 0.94, 0.85, 0.995);
+pic1->Pic(0,0)->SetTitleTime(true);
+pic1->Pic(0,0)->SetTitleDate(true);
+pic1->Pic(0,0)->SetTitleItem(true);
+pic1->Pic(0,0)->SetAutoScale(true);
+pic1->Pic(0,0)->SetApplyToAll(true);
+pic1->Pic(0,0)->SetAutoZoom(false);
+pic1->Pic(0,0)->SetXYRatioOne(false);
+pic1->Pic(0,0)->SetPadAtt(0, 2, 0, 0, 30, 30, 0, 0);
+pic1->Pic(0,0)->SetXAxisAttTime(0, "%H:%M:%S%F1995-01-01 00:00:00s0", -1);
+pic1->Pic(0,0)->AddObjName("Analysis/Histograms/By_PCha/SUB0/SFP1/TAMEX 0/PCHA_SlowTOT SUB 0 SFP 1 TAM  0", "COL");
+pic1->Pic(0,0)->SetLineAtt(602, 1, 1, 0);
+pic1->Pic(0,0)->SetFillAtt(0, 1001, 0);
+pic1->Pic(0,0)->SetMarkerAtt(1, 1, 1, 0);
+pic1->Pic(0,0)->SetAxisAtt(0, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,0)->SetAxisAtt(1, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 0, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,0)->SetAxisAtt(2, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 0, 0);
+pic1->Pic(0,1)->SetLogScale(2, 1);
+pic1->Pic(0,1)->SetRangeX(0.5, 15.5);
+pic1->Pic(0,1)->SetRangeY(1250, 2.55875e+06);
+pic1->Pic(0,1)->SetRangeZ(0, 3730.65);
+pic1->Pic(0,1)->SetLineAtt(1, 1, 1, -1);
+pic1->Pic(0,1)->SetFillAtt(10, 1001, -1);
+pic1->Pic(0,1)->SetHisStats(true);
+pic1->Pic(0,1)->SetStatsAttr(0.78, 0.775, 0.98, 0.935, 11111111, "6.4g", 0, "5.4g");
+pic1->Pic(0,1)->SetHisTitle(true);
+pic1->Pic(0,1)->SetTitleAttr(0.15, 0.94, 0.85, 0.995);
+pic1->Pic(0,1)->SetTitleTime(true);
+pic1->Pic(0,1)->SetTitleDate(true);
+pic1->Pic(0,1)->SetTitleItem(true);
+pic1->Pic(0,1)->SetAutoScale(true);
+pic1->Pic(0,1)->SetApplyToAll(true);
+pic1->Pic(0,1)->SetAutoZoom(false);
+pic1->Pic(0,1)->SetXYRatioOne(false);
+pic1->Pic(0,1)->SetPadAtt(0, 2, 0, 0, 30, 30, 0, 0);
+pic1->Pic(0,1)->SetXAxisAttTime(0, "%H:%M:%S%F1995-01-01 00:00:00s0", -1);
+pic1->Pic(0,1)->AddObjName("Analysis/Histograms/By_PCha/SUB0/SFP1/TAMEX 1/PCHA_SlowTOT SUB 0 SFP 1 TAM  1", "COL");
+pic1->Pic(0,1)->SetLineAtt(602, 1, 1, 0);
+pic1->Pic(0,1)->SetFillAtt(0, 1001, 0);
+pic1->Pic(0,1)->SetMarkerAtt(1, 1, 1, 0);
+pic1->Pic(0,1)->SetAxisAtt(0, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,1)->SetAxisAtt(1, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 0, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,1)->SetAxisAtt(2, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 0, 0);
+pic1->Pic(0,2)->SetLogScale(2, 1);
+pic1->Pic(0,2)->SetRangeX(0.5, 15.5);
+pic1->Pic(0,2)->SetRangeY(1250, 2.55875e+06);
+pic1->Pic(0,2)->SetRangeZ(0, 3687.6);
+pic1->Pic(0,2)->SetLineAtt(1, 1, 1, -1);
+pic1->Pic(0,2)->SetFillAtt(10, 1001, -1);
+pic1->Pic(0,2)->SetHisStats(true);
+pic1->Pic(0,2)->SetStatsAttr(0.78, 0.775, 0.98, 0.935, 11111111, "6.4g", 0, "5.4g");
+pic1->Pic(0,2)->SetHisTitle(true);
+pic1->Pic(0,2)->SetTitleAttr(0.15, 0.94, 0.85, 0.995);
+pic1->Pic(0,2)->SetTitleTime(true);
+pic1->Pic(0,2)->SetTitleDate(true);
+pic1->Pic(0,2)->SetTitleItem(true);
+pic1->Pic(0,2)->SetAutoScale(true);
+pic1->Pic(0,2)->SetApplyToAll(true);
+pic1->Pic(0,2)->SetAutoZoom(false);
+pic1->Pic(0,2)->SetXYRatioOne(false);
+pic1->Pic(0,2)->SetPadAtt(0, 2, 0, 0, 30, 30, 0, 0);
+pic1->Pic(0,2)->SetXAxisAttTime(0, "%H:%M:%S%F1995-01-01 00:00:00s0", -1);
+pic1->Pic(0,2)->AddObjName("Analysis/Histograms/By_PCha/SUB0/SFP1/TAMEX 2/PCHA_SlowTOT SUB 0 SFP 1 TAM  2", "COL");
+pic1->Pic(0,2)->SetLineAtt(602, 1, 1, 0);
+pic1->Pic(0,2)->SetFillAtt(0, 1001, 0);
+pic1->Pic(0,2)->SetMarkerAtt(1, 1, 1, 0);
+pic1->Pic(0,2)->SetAxisAtt(0, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,2)->SetAxisAtt(1, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 0, 0.035, kFALSE, "+", 2048, 0);
+pic1->Pic(0,2)->SetAxisAtt(2, 1, 1, 42, 0.005, 0.035, 510, 0.03, 1, 42, 1, 0.035, kFALSE, "+", 0, 0);
+go4->StartViewPanel(0, 0, 1623, 670, Go4_normal, pic1);
+delete pic1;
+
