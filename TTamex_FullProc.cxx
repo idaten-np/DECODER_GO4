@@ -221,7 +221,16 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					MAX_CHA_phy, 0, MAX_CHA_phy, 
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
-		}      
+		}
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		{
+			sprintf (chis,"TREND/SUB%d/SFP%d/TAMEX%2d/CHA%2d/trendSTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"trend_STOT");
+			h2_trend_STOT[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
+					TREND_N, 0, TREND_N,
+					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4
+					);
+		}
 #endif // IDATEN_MONITOR
 	
 
@@ -1185,7 +1194,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	if (!fCalibrationDone) if( (l_phy_evt_ct >= N_CAL_EVT) || fPar->useOldCalibration)
 	{
 		printf ("charly! start calibaration \n");
-
 		for (l_i=0; l_i<MAX_CHA_old_AN; l_i++)
 		{
 			l_sum[l_i] = 0; 
@@ -1244,6 +1252,9 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				}
 			}
 		}
+#ifdef WR_TIME_STAMP
+		l_wr_ts00 = l_wr_ts + TREND_INTV;
+#endif // WR_TIME_STAMP
 		fCalibrationDone=kTRUE;
 		printf ("calibration finished \n");  
 		fflush (stdout);
@@ -1257,6 +1268,28 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 	if(fCalibrationDone)
 	{
+#ifdef IDATEN_MONITOR
+#ifdef WR_TIME_STAMP
+		if (l_wr_ts > l_wr_ts00)
+		{
+			fprintf(stdout, "l_wr_ts %llu l_wr_ts00 %llu diff %llu d %llu\n", l_wr_ts, l_wr_ts00, l_wr_ts - l_wr_ts00, TREND_INTV); fflush(stdout);
+			l_wr_ts00 += TREND_INTV;
+			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++) 
+			{
+				for (int ibiny=0; ibiny<COARSE_CT_RANGE/4; ibiny++) 
+				{
+					for (int ibinx=0; ibinx<TREND_N-1; ibinx++) 	
+					{
+						h2_trend_STOT[iSSY][iSFP][iTAM][iCHA]->SetBinContent(1+ibinx, 1+ibiny, h2_trend_STOT[iSSY][iSFP][iTAM][iCHA]->GetBinContent(1+ibinx+1, 1+ibiny));
+					}
+					h2_trend_STOT[iSSY][iSFP][iTAM][iCHA]->SetBinContent(TREND_N, 1+ibiny, 0);
+				}
+			}
+		}
+
+#endif // WR_TIME_STAMP
+#endif // IDATEN_MONITOR
+
 
 		size=v_SSY.size();
 		//fprintf(stdout, "v_SSY.size() %d\n", size);
@@ -1317,6 +1350,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 					if(SlowFast)
 					{
 						h1_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
+						h2_trend_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(TREND_N-1,d_diff);
 						h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
 					}
 					else
@@ -1368,12 +1402,14 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		}
 
 
+#ifdef IDATEN_MONITOR
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][0]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][0]);
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][1]);
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][2]);
 		}
+#endif // IDATEN_MONITOR
 	
 
 

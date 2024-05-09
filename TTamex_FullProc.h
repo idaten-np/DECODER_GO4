@@ -24,6 +24,8 @@
 #define MAX_SPEZIAL 1000000000
 
 #define IDATEN_MONITOR 1
+#define TREND_INTV 60e9 /// ns
+#define TREND_N 30
 
 #ifdef WR_TIME_STAMP
 #define SUB_SYSTEM_ID      0x0100
@@ -175,6 +177,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 		TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_STOT_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH1 *h1_FTle_TTS[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+		TH2 *h2_trend_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
 #endif // IDATEN_MONITOR
@@ -196,6 +199,9 @@ static  UInt_t l_prev_err_tam [MAX_CHA_old];
 static  UInt_t l_prev_err_cha [MAX_CHA_old];
 static  UInt_t l_num_err;
 static  UInt_t l_prev_num_err;
+#ifdef WR_TIME_STAMP
+static	ULong64_t l_wr_ts00;
+#endif // WR_TIME_STAMP
 
 #endif //TUNPACKPROCESSOR_H
 
