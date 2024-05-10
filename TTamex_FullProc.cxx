@@ -157,6 +157,10 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			h_sum_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
 #ifdef IDATEN_MONITOR
+		sprintf (chis,"MULTIPLICITY_LaBr3_hit");
+		sprintf (chead,"MULTIPLICITY_LaBr3_hit");
+		h1_Multiplicity_LaBr3 = MakeTH1 ('I', chis, chead, 20, 0, 20);
+
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"MULTIPLICITY0/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY0 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
@@ -616,6 +620,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	Int_t     l_hct      [MAX_CHA_old_AN];            // hit counter/index
 
 	Int_t	l_hct2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3];
+	Int_t   l_hct2_LaBr3;
 
 	std::vector<UInt_t> 	v_SSY;
 	std::vector<UInt_t> 	v_SFP;
@@ -760,6 +765,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_hct2[iSSY][iSFP][iTAM][iCHA][1]=0;
 		l_hct2[iSSY][iSFP][iTAM][iCHA][2]=0;
 	}
+	l_hct2_LaBr3 = 0;
 	v_SSY       	.clear();
 	v_SFP       	.clear();
 	v_TAM       	.clear();
@@ -1391,6 +1397,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								v_TOT[jtot], (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot],
 								v_TTS[itot]
 								);
+						if ( v_TAM2[itot]==0 || v_TAM2[itot]==1 || (v_TAM2[itot]==2 && v_PCHA[itot]<4) )
+							l_hct2_LaBr3++;
 						Double_t ftle_tts = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
 						if(ftle_tts < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle_tts >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts -= CYCLE_TIME*COARSE_CT_RANGE;
@@ -1409,6 +1417,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][1]);
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][2]);
 		}
+		h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
+
 #endif // IDATEN_MONITOR
 	
 
