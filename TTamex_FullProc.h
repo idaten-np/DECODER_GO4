@@ -23,6 +23,10 @@
 
 #define MAX_SPEZIAL 1000000000
 
+#define IDATEN_MONITOR 1
+#define TREND_INTV 60e9 /// ns
+#define TREND_N 30
+
 #ifdef WR_TIME_STAMP
 #define SUB_SYSTEM_ID      0x0100
 #define TS__ID_L16         0x03e1
@@ -38,7 +42,7 @@
 #define COARSE_CT_RANGE  0x800  // 11 bits
 
 #define MAX_SSY        1                // maximum number of sub-systems (readout pcs in nxm system)
-#define MAX_SFP        4
+#define MAX_SFP        2
 #define MAX_TAM        7                // maximum febex/tamex per sfp
 
 #define MAX_CHA_old_INPUT 33                // A) maximum physical input channels per module. must be modulo 4
@@ -159,11 +163,13 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH2   *h_7_5_vs_11_9; 
 
+
 		TH1   *h_p_sum_ab;
 		TH2   *h_p_tota_vs_a;
 		TH2   *h_p_totb_vs_b;
 		TH2   *h_p_diff_ba_sum_ab;                
 
+#ifdef IDATEN_MONITOR
 		TH2 *h2_PCHA_STOT[MAX_SSY][MAX_SFP][MAX_TAM];
 		TH2 *h2_PCHA_FTOT[MAX_SSY][MAX_SFP][MAX_TAM];
 
@@ -171,9 +177,10 @@ class TTamex_FullProc : public TGo4EventProcessor {
 		TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_STOT_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH1 *h1_FTle_TTS[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+		TH2 *h2_trend_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
-
+#endif // IDATEN_MONITOR
 
 		TGo4Picture      *fPicture;
 
@@ -192,6 +199,9 @@ static  UInt_t l_prev_err_tam [MAX_CHA_old];
 static  UInt_t l_prev_err_cha [MAX_CHA_old];
 static  UInt_t l_num_err;
 static  UInt_t l_prev_num_err;
+#ifdef WR_TIME_STAMP
+static	ULong64_t l_wr_ts00;
+#endif // WR_TIME_STAMP
 
 #endif //TUNPACKPROCESSOR_H
 
