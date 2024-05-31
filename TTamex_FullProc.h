@@ -23,6 +23,7 @@
 
 #define MAX_SPEZIAL 1000000000
 
+#define IDATEN_MONITOR 1
 #ifdef WR_TIME_STAMP
 #define SUB_SYSTEM_ID      0x0100
 #define TS__ID_L16         0x03e1
@@ -144,6 +145,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
 
+#endif // IDATEN_MONITOR
 
 		TGo4Picture      *fPicture;
 
