@@ -1020,8 +1020,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						Double_t ftle = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
 						if(ftle < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle -= CYCLE_TIME*COARSE_CT_RANGE;
-						h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
-						//h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill((Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot]);
+						h1_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
 					}
 				}
 			}
