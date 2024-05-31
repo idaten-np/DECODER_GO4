@@ -55,13 +55,8 @@
 // so called 17th channel should would appear according to chahit as
 // channel nr 48, therefore 49 channels in total
 
-//#define N_DEEP_AN      4                // deep analysis for first N_DEEP_AN channels specified below.
 // must be even nr.
 
-#define N_DEEP_AN      0  // JAM 7-june-2022: no deep correlations when we use tree output
-
-#define MAX_CHA_old_AN    24                // total nr. of channels analyzed. must be modulo 4
-//#define MAX_CHA_old_AN    64                // total nr. of channels analyzed. must be modulo 4
 #define MAX_HITS       1                // max. number of hits per channel accepted
 //#define MAX_HITS      10                // max. number of hits per channel accepted
 
@@ -129,35 +124,10 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1   *h_err_box[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_old];  // box histogram in SFP id / TAMEX id / CHANNEL nr coordinates
 
-		TH1   *h_tim[MAX_CHA_old_AN];                          // box histogram in test channel coordinates
 
-		TH1   *h_sum[MAX_CHA_old_AN];                          // sum histogram in test channel coordinates
 		TH1   *h_tim_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam];
 		TH1   *h_cct[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam];
 		TH1   *h_sum_2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam];  // sum histogram in SFP id / TAMEX id / CHANNEL nr coordinates
-
-		TH2   *h_raw_tim_corr[N_DEEP_AN>>1];               // raw time correlatian ch1-ch0, ch3-ch2, ...
-
-		TH1   *h_cal_tim_diff[MAX_CHA_old_AN][MAX_CHA_old_AN];     // calibrated channel time differences
-
-		TH1   *h_cal_tim_diff_wic[MAX_CHA_old_AN][MAX_CHA_old_AN]; // calibrated chan. time diff. 
-		TH1   *h_cal_tim_diff_woc[MAX_CHA_old_AN][MAX_CHA_old_AN]; // with a (wic) and without (woc)
-																   // clock 
-		TH1   *h_coarse_diff[MAX_CHA_old_AN][MAX_CHA_old_AN];      // coarse ctr differences
-
-		TH1   *h_hitpat[MAX_CHA_old_AN];                       // test channel hit pattern
-
-		TH1   *h_coarse[MAX_CHA_old_AN];                       // coarse ctr distribution
-
-		TH1   *h_cal_tim_diff_te[MAX_CHA_old_AN][MAX_CHA_old_AN]; // calibrated channel time differences
-
-		TH1   *h_cal_tim_diff_tr_av[MAX_CHA_old_AN][MAX_CHA_old_AN]; //
-
-		TH1   *h_cal_tim_diff_tr_av_bc[MAX_CHA_old_AN][MAX_CHA_old_AN]; // ... base line corrected      
-
-		TH1   *h_cal_tim_diff_tr_rms[MAX_CHA_old_AN][MAX_CHA_old_AN]; //
-
-		TH2   *h_7_5_vs_11_9; 
 
 		TH1   *h_p_sum_ab;
 		TH2   *h_p_tota_vs_a;
