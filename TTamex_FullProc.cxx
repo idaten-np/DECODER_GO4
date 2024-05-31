@@ -74,7 +74,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 	Text_t chis [256];
 	Text_t chead[256];
-	Int_t iSSY, iSFP, iTAM, iCHA, iCHA_tam, iCHA_phy;
+	Int_t iSSY, iSFP, iTAM, iCHA, iTCHA, iPCHA;
 
 	// Creation of histograms (check if restored from auto save file):
 	if(GetHistogram("didi")==0)
@@ -287,7 +287,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 {  // called by framework. We dont fill any output event here at all
 	Int_t      l_h, l_i, l_j, l_k;
 	Int_t     size;
-	Int_t     iSSY, iSFP, iTAM, iCHA, iCHA_tam, iCHA_phy;
+	Int_t     iSSY, iSFP, iTAM, iCHA, iTCHA, iPCHA;
 	Bool_t    SlowFast; // 0 for fast, 1 for slow
 						//UInt_t    *pl_se_dat;
 						//UInt_t    *pl_tmp;
@@ -940,22 +940,22 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 					iSSY = v_SSY[i];
 					iSFP = v_SFP[i];
 					iTAM = v_TAM[i];
-					iCHA_tam = v_TCHA[i];
-					iCHA_phy = iCHA_tam/2;
-					SlowFast = iCHA_tam%2; // 0 for fast, 1 for slow
-					l_hct2[iSSY][iSFP][iTAM][iCHA_tam][2]++;
+					iTCHA = v_TCHA[i];
+					iPCHA = iTCHA/2;
+					SlowFast = iTCHA%2; // 0 for fast, 1 for slow
+					l_hct2[iSSY][iSFP][iTAM][iTCHA][2]++;
 
 					l_coarse_diff = -v_Coarse_ct[i] + v_Coarse_ct[j];
 					if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-					d_diff = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][iCHA_tam][v_tdl[i]] - d_finetimecal[iSSY][iSFP][iTAM][iCHA_tam][v_tdl[j]];
+					d_diff = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[i]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[j]];
 
 					v_SSY2      .push_back(iSSY);
 					v_SFP2      .push_back(iSFP);
 					v_TAM2      .push_back(iTAM);
-					v_PCHA      .push_back(iCHA_phy);
+					v_PCHA      .push_back(iPCHA);
 					v_TOT       .push_back(d_diff);
 					v_Tle_cct   .push_back(v_Coarse_ct[i]);
-					v_Fine_time .push_back(d_finetimecal[iSSY][iSFP][iTAM][iCHA_tam][v_tdl[i]]);
+					v_Fine_time .push_back(d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[i]]);
 					v_branch    .push_back(SlowFast);
 					v_TTS       .push_back(d_tts);
 
@@ -973,14 +973,14 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 #ifdef IDATEN_MONITOR
 					if(SlowFast)
 					{
-						h1_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
-						h2_trend_STOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(TREND_N-1,d_diff);
-						h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
+						h1_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(d_diff);
+						h2_trend_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(TREND_N-1,d_diff);
+						h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iPCHA,d_diff);
 					}
 					else
 					{
-						h1_FTOT[iSSY][iSFP][iTAM][iCHA_phy]->Fill(d_diff);
-						h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iCHA_phy,d_diff);
+						h1_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(d_diff);
+						h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iPCHA,d_diff);
 					}
 #endif // IDATEN_MONITOR
 					break;
@@ -1020,8 +1020,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						Double_t ftle_tts = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
 						if(ftle_tts < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle_tts >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts -= CYCLE_TIME*COARSE_CT_RANGE;
-						h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA_phy]->Fill(ftle_tts);
-						//h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA_phy]->Fill((Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot]);
+						h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle_tts);
+						//h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill((Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot]);
 					}
 				}
 			}
