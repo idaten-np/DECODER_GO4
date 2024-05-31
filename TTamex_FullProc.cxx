@@ -183,6 +183,16 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
 					);
 		}      
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/STOT_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"STOT_FTle");
+			h2_STOT_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
+					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4,
+					COARSE_CT_RANGE, -400e3, 600e3
+					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
+					);
+		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_SlowTOT_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
@@ -1021,6 +1031,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						if(ftle < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle += CYCLE_TIME*COARSE_CT_RANGE;
 						if(ftle >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle -= CYCLE_TIME*COARSE_CT_RANGE;
 						h1_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
+						h2_STOT_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(v_TOT[jtot], ftle)
 					}
 				}
 			}
