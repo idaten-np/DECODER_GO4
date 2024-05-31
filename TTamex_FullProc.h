@@ -145,7 +145,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 		TH1 *h1_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH1 *h1_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_STOT_FTOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
-		TH1 *h1_FTle_TTS[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+		TH1 *h1_FTle[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_trend_STOT[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
