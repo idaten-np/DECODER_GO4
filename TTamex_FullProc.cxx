@@ -177,9 +177,9 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FTle-TTS_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Fle-TTS");
-			h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
+			h1_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
 					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
 					);
 		}      
@@ -1017,10 +1017,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								);
 						if ( v_TAM2[itot]==0 || v_TAM2[itot]==1 || (v_TAM2[itot]==2 && v_PCHA[itot]<4) )
 							l_hct2_LaBr3++;
-						Double_t ftle_tts = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
-						if(ftle_tts < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts += CYCLE_TIME*COARSE_CT_RANGE;
-						if(ftle_tts >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle_tts -= CYCLE_TIME*COARSE_CT_RANGE;
-						h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle_tts);
+						Double_t ftle = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
+						if(ftle < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle += CYCLE_TIME*COARSE_CT_RANGE;
+						if(ftle >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle -= CYCLE_TIME*COARSE_CT_RANGE;
+						h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
 						//h1_FTle_TTS[iSSY][iSFP][iTAM][iPCHA]->Fill((Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot]);
 					}
 				}
