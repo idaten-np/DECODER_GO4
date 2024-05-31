@@ -542,7 +542,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		}
 
 		//printf ("l_dat_len_byte: %d \n", l_dat_len_byte);
-		for (int l_i=0; l_i<100; l_i++)
+		for (l_i=0; l_i<100; l_i++)
 		{
 			//printf("%x l_padd\n",*pl_tmp);
 			l_padd = *pl_tmp++;
