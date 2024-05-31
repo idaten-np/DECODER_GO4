@@ -203,7 +203,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"TREND/SUB%d/SFP%d/TAMEX%2d/CHA%2d/trendSTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"TREND/SUB%d/SFP%d/TAMEX%02d/CHA%02d/trendSTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"trend_STOT");
 			h2_trend_STOT[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
 					TREND_N, 0, TREND_N,
