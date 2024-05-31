@@ -792,7 +792,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_dat = *pl_tmp++;
 		if (l_dat != SUB_SYSTEM_ID)
 		{
-			printf ("ERROR>> 1. data word is not sub-system id: %d \n");
+			printf ("ERROR>> 1. data word is not sub-system id: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", SUB_SYSTEM_ID, l_dat);
 			goto bad_event;
 		}
@@ -802,7 +802,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id !=TS__ID_L16)
 		{
-			printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: %d \n");
+			printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_L16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
@@ -812,7 +812,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id != TS__ID_M16)
 		{
-			printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: %d \n");
+			printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_M16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
@@ -822,7 +822,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id != TS__ID_H16)
 		{
-			printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: %d \n");
+			printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
