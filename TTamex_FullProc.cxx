@@ -76,8 +76,6 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 	Text_t chis [256];
 	Text_t chead[256];
 	Int_t iSSY, iSFP, iTAM, iCHA, iCHA_tam, iCHA_phy;
-	Int_t iANA, jANA;
-	UInt_t l_r, l_c, l_nr, l_nc;
 
 	// Creation of histograms (check if restored from auto save file):
 	if(GetHistogram("didi")==0)
