@@ -198,6 +198,8 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					);
 		}
 
+		// box histograms for test channels only
+
 /*		l_nc = MAX_CHA_old_AN >>2; // nr. of columns in picture
 		l_nr = 4;              // nr. of rows    in picture
 		fPicture = new TGo4Picture("Box test channels","Box");
