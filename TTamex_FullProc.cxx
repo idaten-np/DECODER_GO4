@@ -305,6 +305,9 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	int fpstart, fpstop;
 	Double_t    stot=0, ftot=0, stle=0, ftle=0;
 	Double_t     d_tts=0;
+#ifdef VETO_EVT
+	Bool_t b_veto=kFALSE;
+#endif // VETO_EVT
 	uint32_t    *pl_se_dat;
 	uint32_t    *pl_tmp;
 
@@ -897,7 +900,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 #ifdef WR_TIME_STAMP
 		if (l_wr_ts > l_wr_ts00)
 		{
-			fprintf(stdout, "l_wr_ts %llu l_wr_ts00 %llu diff %llu d %llu\n", l_wr_ts, l_wr_ts00, l_wr_ts - l_wr_ts00, TREND_INTV); fflush(stdout);
+			//fprintf(stdout, "l_wr_ts %llu l_wr_ts00 %llu diff %llu d %llu\n", l_wr_ts, l_wr_ts00, l_wr_ts - l_wr_ts00, (ULong64_t)TREND_INTV); fflush(stdout);
 			l_wr_ts00 += TREND_INTV;
 			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++) 
 			{
@@ -933,7 +936,21 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 			fprintf(stdout,"\n");
 			fflush(stdout);
 		}*/
-
+#ifdef VETO_EVT
+		ifp=0; b_veto=kFALSE;
+		if (fPar->vetoEnable)
+		{
+			while (ifp<size)
+			{
+				if (v_SSY[ifp]==0) if(v_SFP[ifp]==1) if (v_TAM[ifp]==5) if (v_TCHA[ifp]==2)
+				{
+					b_veto=kTRUE;
+				}
+				ifp++;
+			}
+		}
+#endif // VETO_EVT
+	
 		ifp=0;
 		while (ifp<size)
 		{
@@ -1009,6 +1026,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										);
 								//fprintf(stdout, "fOutput->AddHit(%d, %d, %d, %d,\t %.0f, %.0f, %.0f, %.0f, %.0f  );\n", iSSY, iSFP, iTAM, iPCHA, stot, stle, ftot, ftle, d_tts);
 #ifdef IDATEN_MONITOR
+
+#ifdef VETO_EVT
+								if(!b_veto)
+#endif // VETO_EVT
 								{
 									h1_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(stot);
 									h1_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(ftot);
