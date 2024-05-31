@@ -917,8 +917,23 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 
 		size=v_SSY.size();
+		/*
+		fprintf(stdout,"v_SSY.size() %d\n", (int)v_SSY.size());
+		for (ifp=0; ifp<size; ifp++)
+		{
+			fprintf(stdout,"v_SSY        %u ", v_SSY       	.at(ifp));
+			fprintf(stdout,"v_SFP        %u ", v_SFP       	.at(ifp));
+			fprintf(stdout,"v_TAM        %u ", v_TAM       	.at(ifp));
+			fprintf(stdout,"v_avail        %u ", v_avail       	.at(ifp));
+			fprintf(stdout,"v_TCHA       %d ", v_TCHA       .at(ifp));
+			fprintf(stdout,"v_Edge_type  %d ", v_Edge_type 	.at(ifp));
+			fprintf(stdout,"v_Coarse_ct  %d ", v_Coarse_ct 	.at(ifp));
+			fprintf(stdout,"v_tdl        %d ", v_tdl        .at(ifp));
+			fprintf(stdout,"v_avail      %d ", v_avail      .at(ifp));
+			fprintf(stdout,"\n");
+			fflush(stdout);
+		}*/
 
-		//fprintf(stdout, "v_SSY.size() %d\n", size);
 		ifp=0;
 		while (ifp<size)
 		{
