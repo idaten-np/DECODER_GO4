@@ -993,7 +993,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][1]);
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][2]);
 		}
-
 	}
 
 
