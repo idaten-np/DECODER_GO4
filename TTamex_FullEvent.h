@@ -42,31 +42,6 @@ class TTamex_FullEvent : public TGo4EventElement {
 	  }
 #endif // WR_TIME_STAMP
       
-      /* add new timstamp to buffer*/
-     /* void SetTimeDiff(UChar_t channel, Double_t value)
-      {
-        if(channel>=MAX_CHA_old_AN_DIFF) return;
-        fTimeDiff[channel]=value;
-        fprintf(stdout,"fTimeDiff[%d]=%.0f;\n", (int) channel, value); fflush(stdout);
-      }
-      Double_t GetTimeDiff(UInt_t channel)
-      {
-	      if(channel>=MAX_CHA_old_AN_DIFF) return -1; // TODO: proper error handling maybe..
-	      return fTimeDiff[channel];
-      }*/
-
-      void AddFlipTime(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t tcha, Int_t edge_type, Int_t coarse_ct, Int_t tdl)
-      {
-	      flip_SSY       	.push_back(ssy);
-	      flip_SFP       	.push_back(sfp);
-	      flip_TAM       	.push_back(tam);
-	      flip_TCHA     	.push_back(tcha);
-	      flip_Edge_type 	.push_back(edge_type);
-	      flip_Coarse_ct 	.push_back(coarse_ct);
-	      flip_TDL 	      .push_back(tdl);
-        //printf("AddFlipTime size %lu capacity %lu\n", flip_SSY.size(), flip_SSY.capacity());
-      }
-
       void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t tts )
       {
           hit_SSY   .push_back( ssy );
@@ -92,28 +67,13 @@ class TTamex_FullEvent : public TGo4EventElement {
           fprintf(stdout,"\n"); fflush(stdout);*/
 
       }
+	  size_t GetN() {return hit_SSY.size();}
 
-
-      /* Total number of timestamps in buffer for specific id. to be used in readout loops of second analysis step*/
-//      UInt_t NumTimestamps(UChar_t channel)
-//        {
-//          if(channel>=MAX_CHA_old_AN) return 0;
-//          return fTimeStamp[channel].size();
-//        }
 
    private:
 #ifdef WR_TIME_STAMP
    		ULong64_t WR_TS;
 #endif // WR_TIME_STAMP
-      //Double_t fTimeDiff[MAX_CHA_old_AN_DIFF];
-      std::vector<UInt_t> 	flip_SSY;
-      std::vector<UInt_t> 	flip_SFP;
-      std::vector<UInt_t> 	flip_TAM;
-      std::vector<Int_t>  	flip_TCHA;
-      std::vector<Int_t> 	  flip_Edge_type;
-      std::vector<Int_t> 	  flip_Coarse_ct;
-      std::vector<Int_t> 	  flip_TDL;
-
       std::vector<UInt_t> 	hit_SSY;
       std::vector<UInt_t> 	hit_SFP;
       std::vector<UInt_t> 	hit_TAM;

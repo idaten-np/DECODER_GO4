@@ -172,6 +172,10 @@ static  UInt_t l_num_err;
 static  UInt_t l_prev_num_err;
 #ifdef WR_TIME_STAMP
 static	ULong64_t l_wr_ts00;
+static ULong64_t test_good=0;
+static ULong64_t test_bad1=0;
+static ULong64_t test_bad2=0;
+static ULong64_t test_bad3=0;
 #endif // WR_TIME_STAMP
 
 #endif //TUNPACKPROCESSOR_H
