@@ -198,7 +198,6 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}
-
 #endif // IDATEN_MONITOR
 		// box histograms for test channels only
 
