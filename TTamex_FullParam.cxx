@@ -20,4 +20,5 @@ TTamex_FullParam::TTamex_FullParam(const char* name) :
 {
    resetCalibration = kFALSE;
    useOldCalibration = kTRUE;
+   dumpBadEvent = kFALSE;
 }

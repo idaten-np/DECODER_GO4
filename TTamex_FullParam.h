@@ -21,6 +21,7 @@ class TTamex_FullParam : public TGo4Parameter {
       TTamex_FullParam(const char* name = 0);
       Bool_t   useOldCalibration; // if true, use calibration from autosave file, do not wait until N_CAL_EVT
       Bool_t   resetCalibration;  // control starting new calibration
+      Bool_t   dumpBadEvent;  // 
 
    ClassDef(TTamex_FullParam,1)
 };

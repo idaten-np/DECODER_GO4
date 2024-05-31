@@ -41,21 +41,6 @@ void TTamex_FullEvent::Clear(Option_t *t)
 #ifdef WR_TIME_STAMP
 		WR_TS=0;
 #endif // WR_TIME_STAMP
-      /*for (Int_t l_k = 0; l_k < MAX_CHA_old_AN_DIFF; l_k++)
-      {
-        //fTimeStamp[l_k].clear();
-	      fTimeDiff[l_k]= 30 * (l_k+1) * RESET_VAL; // JAM should be out of bounce for regular data
-      }*/
-
-      //fprintf(stdout, "flip_SSY.size() %zu\n",flip_SSY.size()); fflush(stdout);
-      flip_SSY            	.clear();
-      flip_SFP            	.clear();
-      flip_TAM            	.clear();
-      flip_TCHA            	.clear();
-      flip_Edge_type      	.clear();
-      flip_Coarse_ct      	.clear();
-      flip_TDL             	.clear();
-
       /*fprintf(stdout, "hit_SSY.size() %zu\n",hit_SSY.size()); 
       fprintf(stdout, "hit_SFP.size() %zu\n",hit_SFP.size()); 
       fprintf(stdout, "hit_TAM.size() %zu\n",hit_TAM.size()); 

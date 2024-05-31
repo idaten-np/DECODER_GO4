@@ -223,8 +223,6 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 #endif // IDATEN_MONITOR
 	
 
-		// box histograms for test channels only
-
 /*		l_nc = MAX_CHA_old_AN >>2; // nr. of columns in picture
 		l_nr = 4;              // nr. of rows    in picture
 		fPicture = new TGo4Picture("Box test channels","Box");
@@ -298,9 +296,15 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	Int_t      l_h, l_i, l_j, l_k;
 	Int_t     size;
 	Int_t     iSSY, iSFP, iTAM, iCHA, iTCHA, iPCHA;
-	Bool_t    SlowFast; // 0 for fast, 1 for slow
+	//Bool_t    SlowFast; // 0 for fast, 1 for slow
 						//UInt_t    *pl_se_dat;
 						//UInt_t    *pl_tmp;
+	int ifp=0;
+	int jfp=0;
+	int fp0;
+	int fpstart, fpstop;
+	Double_t    stot=0, ftot=0, stle=0, ftle=0;
+	Double_t     d_tts=0;
 	uint32_t    *pl_se_dat;
 	uint32_t    *pl_tmp;
 
@@ -344,17 +348,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	std::vector<Int_t> 	v_Edge_type;
 	std::vector<Int_t> 	v_Coarse_ct;
 	std::vector<Int_t> 	v_tdl;
-	Double_t     d_tts;
+	std::vector<Int_t> 	v_avail;
 
-	std::vector<UInt_t> 	v_SSY2;
-	std::vector<UInt_t> 	v_SFP2;
-	std::vector<UInt_t> 	v_TAM2;
-	std::vector<Int_t> 	  v_PCHA;
-	std::vector<Double_t> v_TOT;
-	std::vector<Int_t> 	  v_Tle_cct;
-	std::vector<Double_t> v_Fine_time;
-	std::vector<Bool_t>   v_branch;
-	std::vector<Double_t> v_TTS;
 
 #ifdef DUMP_BAD_EVENT
 	UInt_t     *pl_tdc_data=0;
@@ -366,6 +361,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	static Double_t  d_diff;
 	static Int_t     l_coarse_diff;
 
+	Int_t sum=0;
 	static Double_t  d_finetimecal[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][N_BIN_T];
 
 	static ULong64_t  l_evt_ct=0;
@@ -462,16 +458,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	v_Edge_type 	.clear();
 	v_Coarse_ct 	.clear();
 	v_tdl        	.clear();
-
-	v_SSY2      .clear();
-	v_SFP2      .clear();
-	v_TAM2      .clear();
-	v_PCHA      .clear();
-	v_TOT       .clear();
-	v_Tle_cct   .clear();
-	v_Fine_time .clear();
-	v_branch    .clear();
-	v_TTS       .clear();
+	v_avail			.clear();
 
 	l_err_catch = 0;
 	l_num_err   = 0;
@@ -665,6 +652,11 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						{
 							goto bad_event; 
 						}
+						if (l_ch_tim==RESET_VAL)
+						{
+							fprintf(stdout, "delay line number l_ch_tim==RESET_VAL\n");
+							goto bad_event;
+						}
 
 						/*printf("l_sfp_idx %d l_tam_idx %d l_cha_idx %d l_ch_ix %d edge %d l_coarse_ct %d l_ch_tim %d\n", // TODO: save it to ttree!
 						  l_sfp_idx,
@@ -684,6 +676,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 						v_Edge_type 	.push_back(l_edge_type);
 						v_Coarse_ct 	.push_back(l_coarse_ct);
 						v_tdl        	.push_back(l_ch_tim);
+						v_avail			.push_back(1);
 
 
 						/*if(fCalibrationDone)
@@ -846,42 +839,40 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		{
 			fprintf(stdout,"fPar->useOldCalibration\n"); fflush(stdout);
 			fprintf(fd_out,"fPar->useOldCalibration\n"); fflush(fd_out);
-			/*for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+			/*for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
 			  {
 			  for(l_i=0; l_i<N_BIN_T; l_i++)
-			  d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = ((double) h_sum_2[iSSY][iSFP][iTAM][iCHA]->GetBinContent(l_i+1) / (double) h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()) * CYCLE_TIME;
+			  d_finetimecal[iSSY][iSFP][iTAM][iTCHA][l_i] = ((double) h_sum_2[iSSY][iSFP][iTAM][iTCHA]->GetBinContent(l_i+1) / (double) h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()) * CYCLE_TIME;
 			  }*/
 		}
 		//else
 		{
-			for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+			for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
 			{
-				Int_t sum=0;
 				//fprintf(stdout,"h_tim_2[iSSY%u][iSFP%u][iTAM%u][iCHA%d]->GetEntries()==%.0f\n",iSSY,iSFP,iTAM,iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
-				if(h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()<N_BIN_T*4) // 600*4
+				//if(h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()<N_BIN_T*4) // 600*4
+				if(h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()<N_BIN_T) // 600
 				{
-					fprintf(stdout, "not enough entries to calibrate SSY%u SFP%u TAM%u TCHA%d %0.f ... set as 0.\n", iSSY, iSFP, iTAM, iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
-					for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = 0;
-					//for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = (Double_t)(l_i * CYCLE_TIME)/N_BIN_T;
-					//d_finetimecal[iSSY][iSFP][iTAM][iCHA]={0};
+					//fprintf(stdout, "not enough entries to calibrate SSY%u SFP%u TAM%u TCHA%d %0.f ... set as 0.\n", iSSY, iSFP, iTAM, iTCHA, h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries());
+					for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iTCHA][l_i] = 0;
+					//for(l_i=0; l_i<N_BIN_T; l_i++) d_finetimecal[iSSY][iSFP][iTAM][iTCHA][l_i] = (Double_t)(l_i * CYCLE_TIME)/N_BIN_T;
 					continue;
 				}
 				else 
 				{
+					sum=0;
 					for(l_i=0; l_i<N_BIN_T; l_i++)
 					{
-						sum += (int)h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetBinContent(l_i+1);
-						//fprintf(stdout,"sum += h_tim_2[iSSY%u][iSFP%u][iTAM%u][iCHA%d]->GetBinContent(l_i+1 %d)%f;->%d\n", iSSY,iSFP,iTAM,iCHA,l_i,h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetBinContent(l_i+1),sum);
-						h_sum_2[iSSY][iSFP][iTAM][iCHA]->SetBinContent(l_i+1, sum);
-						//d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = (double)sum / (double) h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries() * CYCLE_TIME;
+						sum += (int)h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetBinContent(l_i+1);
+						h_sum_2[iSSY][iSFP][iTAM][iTCHA]->SetBinContent(l_i+1, sum);
 					}
-					if(sum!=h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries())
+					if(sum!=h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries())
 					{
-						fprintf(stderr,"sum!=h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries()\n");
+						fprintf(stderr,"sum!=h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()\n");
 					}
 					for(l_i=0; l_i<N_BIN_T; l_i++)
 					{
-						d_finetimecal[iSSY][iSFP][iTAM][iCHA][l_i] = (Double_t)h_sum_2[iSSY][iSFP][iTAM][iCHA]->GetBinContent(l_i+1) / (Double_t) sum * CYCLE_TIME;
+						d_finetimecal[iSSY][iSFP][iTAM][iTCHA][l_i] = (Double_t)h_sum_2[iSSY][iSFP][iTAM][iTCHA]->GetBinContent(l_i+1) / (Double_t) sum * CYCLE_TIME;
 					}
 				}
 			}
@@ -926,133 +917,131 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 
 		size=v_SSY.size();
+
 		//fprintf(stdout, "v_SSY.size() %d\n", size);
-		for (int i=0; i<size; i++)
+		ifp=0;
+		while (ifp<size)
 		{
-			if(v_TCHA[i]==-1)
+			if(v_TCHA[ifp]==-1) 
 			{ 
-				d_tts = (Double_t)(v_Coarse_ct[i] * CYCLE_TIME) - d_finetimecal[v_SSY[i]][v_SFP[i]][v_TAM[i]][MAX_CHA_tam-1][v_tdl[i]];
-				//fprintf(stdout,"d_tts = (Double_t)(v_Coarse_ct[i%d]%d * CYCLE_TIME) - d_finetimecal[v_SSY[i]][v_SFP[i]][v_TAM[i]][MAX_CHA_tam-1][v_tdl[i]]=%.0f;\n",i, v_Coarse_ct[i],d_tts);
-				continue;
+				fp0=ifp;
+				iSSY = v_SSY[ifp];
+				iSFP = v_SFP[ifp];
+				iTAM = v_TAM[ifp];
+				d_tts = (Double_t)(v_Coarse_ct[ifp] * CYCLE_TIME) - d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[ifp]];
+				v_avail[ifp]=0;
+				ifp++; continue;
 			}
-			if(v_tdl[i]==RESET_VAL) continue;
-			for (int j=i; j<size; j++)
+			
+			if (v_avail[ifp+0]) if (v_SSY[ifp+0] == iSSY) if (v_SFP[ifp+0] == iSFP) if (v_TAM[ifp+0] == iTAM) if((v_TCHA[ifp+0]&0x1)==0) if (v_Edge_type[ifp+0]==1)
 			{
-				if(v_TCHA[j]==-1) continue;
-				if(v_tdl[j]==RESET_VAL) continue;
-
-				if(v_SSY[i]!=v_SSY[j]) continue;
-				if(v_SFP[i]!=v_SFP[j]) continue;
-				if(v_TAM[i]!=v_TAM[j]) continue;
-				if(v_TCHA[i]!=v_TCHA[j]) continue;
-				if(v_Edge_type[i]==1 && v_Edge_type[j]==0)
+				iTCHA = v_TCHA[ifp];
+				iPCHA = iTCHA/2;
+				if (v_avail[ifp+1]) if (v_SSY[ifp+1] == iSSY) if (v_SFP[ifp+1] == iSFP) if (v_TAM[ifp+1] == iTAM) if (v_TCHA[ifp+1] == iTCHA+0) if (v_Edge_type[ifp+1]==0)
 				{
-					iSSY = v_SSY[i];
-					iSFP = v_SFP[i];
-					iTAM = v_TAM[i];
-					iTCHA = v_TCHA[i];
-					iPCHA = iTCHA/2;
-					SlowFast = iTCHA%2; // 0 for fast, 1 for slow
-					l_hct2[iSSY][iSFP][iTAM][iTCHA][2]++;
+					jfp=ifp+2;
+					while (jfp<size)
+					{
+						if (v_TCHA[jfp]==-1) break;
+						if (v_avail[jfp+0]) if (v_SSY[jfp+0] == iSSY) if (v_SFP[jfp+0] == iSFP) if (v_TAM[jfp+0] == iTAM) if (v_TCHA[jfp+0] == iTCHA+1) if (v_Edge_type[jfp+0]==1)
+						{
+							if (v_avail[jfp+1]) if (v_SSY[jfp+1] == iSSY) if (v_SFP[jfp+1] == iSFP) if (v_TAM[jfp+1] == iTAM) if (v_TCHA[jfp+1] == iTCHA+1) if (v_Edge_type[jfp+1]==0)
+							{
 
-					l_coarse_diff = -v_Coarse_ct[i] + v_Coarse_ct[j];
-					if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-					d_diff = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[i]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[j]];
+								l_coarse_diff = -v_Coarse_ct[jfp+0] + v_Coarse_ct[ifp+0];
+								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								if (l_coarse_diff> 30 && l_coarse_diff<COARSE_CT_RANGE-30){jfp++; continue;}
 
-					v_SSY2      .push_back(iSSY);
-					v_SFP2      .push_back(iSFP);
-					v_TAM2      .push_back(iTAM);
-					v_PCHA      .push_back(iPCHA);
-					v_TOT       .push_back(d_diff);
-					v_Tle_cct   .push_back(v_Coarse_ct[i]);
-					v_Fine_time .push_back(d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[i]]);
-					v_branch    .push_back(SlowFast);
-					v_TTS       .push_back(d_tts);
+								fpstart=ifp+0; fpstop=ifp+1;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								ftot = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstart]][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
-					/*fprintf(stdout,"v_SSY2      %u ", v_SSY2      .back());
-					  fprintf(stdout,"v_SFP2      %u ", v_SFP2      .back());
-					  fprintf(stdout,"v_TAM2      %u ", v_TAM2      .back());
-					  fprintf(stdout,"v_TCHA      %d ", v_TAM[i]);
-					  fprintf(stdout,"v_PCHA      %d ", v_PCHA      .back());
-					  fprintf(stdout,"v_TOT       %f ", v_TOT       .back());
-					  fprintf(stdout,"v_Tle_cct   %d ", v_Tle_cct   .back());
-					  fprintf(stdout,"v_Fine_time %f ", v_Fine_time .back());
-					  fprintf(stdout,"v_branch    %d ",(int) v_branch    .back());
-					  fprintf(stdout,"\n");*/
+								fpstart=jfp+0; fpstop=jfp+1;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								stot = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstart]][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
+								fpstart=fp0; fpstop=ifp+0;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<-(COARSE_CT_RANGE>>1)) l_coarse_diff += COARSE_CT_RANGE;
+								ftle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
+
+								fpstart=fp0; fpstop=jfp+0;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<-(COARSE_CT_RANGE>>1)) l_coarse_diff += COARSE_CT_RANGE;
+								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
+
+								/*
+								l_coarse_diff = -v_Coarse_ct[ifp+0] + v_Coarse_ct[ifp+1];
+								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								stot = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+1]];
+
+								l_coarse_diff = -v_Coarse_ct[fp0] + v_Coarse_ct[ifp+0];
+								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fp0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+0]];
+
+								l_coarse_diff = -v_Coarse_ct[jfp+0] + v_Coarse_ct[jfp+1];
+								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								ftot = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[jfp]][v_tdl[jfp+0]] - d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[jfp+1]][v_tdl[jfp+1]];
+
+								l_coarse_diff = -v_Coarse_ct[fp0] + v_Coarse_ct[jfp+0];
+								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
+								ftle = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fp0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA+1][v_tdl[jfp+0]];
+								*/
+
+
+								fOutput->AddHit(iSSY, iSFP, iTAM, iPCHA,
+										stot, stle,
+										ftot, ftle,
+										d_tts
+										);
+								//fprintf(stdout, "fOutput->AddHit(%d, %d, %d, %d,\t %.0f, %.0f, %.0f, %.0f, %.0f  );\n", iSSY, iSFP, iTAM, iPCHA, stot, stle, ftot, ftle, d_tts);
 #ifdef IDATEN_MONITOR
-					if(SlowFast)
-					{
-						h1_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(d_diff);
-						h2_trend_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(TREND_N-1,d_diff);
-						h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iPCHA,d_diff);
-					}
-					else
-					{
-						h1_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(d_diff);
-						h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iPCHA,d_diff);
-					}
+								{
+									h1_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(stot);
+									h1_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(ftot);
+									h2_STOT_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(stot, ftot);
+									h2_trend_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(TREND_N-1,stot);
+
+									h1_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
+									h2_STOT_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(stot,ftle);
+
+									h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iPCHA,stot);
+									h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iPCHA,ftot);
+
+									if ( (iTAM==3 && iPCHA<12) )
+										//if ( iTAM==0 || iTAM==1 || (iTAM==2 && iPCHA<4) )
+									{
+										l_hct2_LaBr3++;
+									}
+								}
 #endif // IDATEN_MONITOR
-					break;
-				}
-			}
-		}
 
-
-		size=v_SSY2.size();
-		//fprintf(stdout, "v_SSY2.size() %d\n", size);
-		for (int itot=0; itot<size; itot++)
-		{
-			for (int jtot=0; jtot<size; jtot++)
-			{
-				if(v_SSY2[itot]!=v_SSY2[jtot]) continue;
-				if(v_SFP2[itot]!=v_SFP2[jtot]) continue;
-				if(v_TAM2[itot]!=v_TAM2[jtot]) continue;
-				if(v_PCHA[itot]!=v_PCHA[jtot]) continue;
-
-				if(v_branch[itot]==1 && v_branch[jtot]==0)
-				{
-					l_coarse_diff = v_Tle_cct[itot]-v_Tle_cct[jtot];
-					if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-					if(0<l_coarse_diff && l_coarse_diff<12)
-					{
-						//fprintf(stdout,"l_coarse_diff %d, h2_STOT_FTOT[v_SSY2[itot] %u][v_SFP[itot] %u][v_TAM2[itot] %u][v_PCHA[itot] %d]->Fill(v_TOT[itot] %f, v_TOT[jtot] %f);\n",
-						//        l_coarse_diff, v_SSY2[itot], v_SFP[itot], v_TAM2[itot], v_PCHA[itot], v_TOT[itot], v_TOT[jtot] );
-						h2_STOT_FTOT[v_SSY2[itot]][v_SFP2[itot]][v_TAM2[itot]][v_PCHA[itot]]->Fill(v_TOT[itot], v_TOT[jtot]);
-
-						fOutput->AddHit(v_SSY2[itot], v_SFP2[itot], v_TAM2[itot], v_PCHA[itot],
-								v_TOT[itot], (Double_t)(v_Tle_cct[itot]*CYCLE_TIME)-v_Fine_time[itot],
-								v_TOT[jtot], (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot],
-								v_TTS[itot]
-								);
-						if ( v_TAM2[itot]==0 || v_TAM2[itot]==1 || (v_TAM2[itot]==2 && v_PCHA[itot]<4) )
-							l_hct2_LaBr3++;
-						Double_t ftle = (Double_t)(v_Tle_cct[jtot]*CYCLE_TIME)-v_Fine_time[jtot] - v_TTS[itot];
-						if(ftle < -CYCLE_TIME*COARSE_CT_RANGE/2) ftle += CYCLE_TIME*COARSE_CT_RANGE;
-						if(ftle >  CYCLE_TIME*COARSE_CT_RANGE/2) ftle -= CYCLE_TIME*COARSE_CT_RANGE;
-						h1_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
-						h2_STOT_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(v_TOT[jtot], ftle)
+								v_avail[ifp+0]=0;
+								v_avail[ifp+1]=0;
+								v_avail[jfp+0]=0;
+								v_avail[jfp+1]=0;
+								break;
+							}
+						}
+						jfp++;
 					}
 				}
 			}
+			ifp++;
 		}
+
+		for (ifp=0; ifp<size; ifp++) if (v_avail[ifp])
+		{
+			l_bad_evt_found=1;
+			goto bad_event2;
+		}
+
+		test_good++;
 
 
 #ifdef IDATEN_MONITOR
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
-		{
-			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][0]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][0]);
-			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][1]);
-			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2]->Fill(l_hct2[iSSY][iSFP][iTAM][iCHA][2]);
-		}
-		h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
+		h1_Multiplicity_LaBr3->Fill(fOutput->GetN());
+		//h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
 
 #endif // IDATEN_MONITOR
-	
-
-
-
-
 
 	}
 
@@ -1089,6 +1078,35 @@ bad_event:
 		//sleep (3);
 	}
 #endif // DUMP_BAD_EVENT
+
+
+
+bad_event2:
+#ifdef DUMP_BAD_EVENT
+	if (l_bad_evt_found == 1 && fPar->dumpBadEvent)
+	{
+		fprintf(stdout,"v_SSY.size() %d\n", (int)v_SSY.size());
+		for (ifp=0; ifp<size; ifp++) //if (v_avail[ifp])
+		{
+			if(v_TCHA[ifp]==-1) fp0=ifp;
+			fprintf(stdout,"v_SSY %u\t ", v_SSY       	.at(ifp));
+			fprintf(stdout,"v_SFP %u\t", v_SFP       	.at(ifp));
+			fprintf(stdout,"v_TAM %u\t", v_TAM       	.at(ifp));
+			fprintf(stdout,"v_avail %b\t", v_avail      .at(ifp));
+			fprintf(stdout,"v_TCHA %2d\t", v_TCHA       .at(ifp));
+			fprintf(stdout,"v_Edge_type %d\t", v_Edge_type 	.at(ifp));
+			//fprintf(stdout,"v_Coarse_ct %4d \t", (v_Coarse_ct 	.at(ifp) - v_Coarse_ct.at(fp0)));
+			fprintf(stdout,"v_Coarse_ct %4d \t", v_Coarse_ct 	.at(ifp));
+			fprintf(stdout,"v_tdl %4d\t", v_tdl        .at(ifp));
+			fprintf(stdout,"\n");
+			fflush(stdout);
+		}
+		test_bad1++;
+		fprintf(stdout, "test_good %llu test_bad1 %llu ratio %f\n", test_good, test_bad1 ,(float)test_bad1/test_good);
+	}
+#endif // DUMP_BAD_EVENT
+
+
 
 	return kTRUE;
 }
