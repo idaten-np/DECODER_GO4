@@ -112,7 +112,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 				{
 					for (iCHA=0; iCHA<MAX_CHA_old; iCHA++)
 					{
-						sprintf (chis,"Error Box Diagrams/SUB %d/SFP %d/TAMEX %2d/Error SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+						sprintf (chis,"Error_Box_Diagrams/SUB%d/SFP%d/TAMEX%02d/Error_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 						sprintf (chead,"ERR_BOX diagram");
 						h_err_box[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 					}
@@ -130,7 +130,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 				{
 					for (iCHA=0; iCHA<MAX_CHA_old; iCHA++)
 					{
-						sprintf (chis,"Box Diagrams/SUB %d/SFP %d/TAMEX %2d/SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+						sprintf (chis,"Box Diagrams/SUB%d/SFP%d/TAMEX %02d/SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 						sprintf (chead,"BOX diagram");
 						h_box[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 					}
@@ -140,19 +140,19 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"COARSE COUNTER/SUB %d/SFP %d/TAMEX %2d/COARSE COUNTER SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"COARSE_COUNTER/SUB%d/SFP%d/TAMEX%02d/COARSE_COUNTER_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"COARSE COUNTER");
 			h_cct[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, COARSE_CT_RANGE, 0, COARSE_CT_RANGE);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%2d/CHA%2d/CALIB TIME SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%02d/CHA%02d/CALIB TIME_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB TIME");
 			h_tim_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%2d/CHA%2d/CALIB SUM SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%02d/CHA%02d/CALIB SUM_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB SUM");
 			h_sum_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
@@ -163,13 +163,13 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
-			sprintf (chis,"MULTIPLICITY0/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY0 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"MULTIPLICITY0/SUB%d/SFP%d/TAMEX%02d/MULTIPLICITY0_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"MULTIPLICITY0");
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][0] = MakeTH1 ('I', chis, chead, 10, 0, 10);
-			sprintf (chis,"MULTIPLICITY1/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY1 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"MULTIPLICITY1/SUB%d/SFP%d/TAMEX%02d/MULTIPLICITY1_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"MULTIPLICITY1");
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][1] = MakeTH1 ('I', chis, chead, 10, 0, 10);
-			sprintf (chis,"MULTIPLICITY2/SUB %d/SFP %d/TAMEX %2d/MULTIPLICITY2 SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"MULTIPLICITY2/SUB%d/SFP%d/TAMEX%02d/MULTIPLICITY2_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"MULTIPLICITY2");
 			h1_Multiplicity[iSSY][iSFP][iTAM][iCHA][2] = MakeTH1 ('I', chis, chead, 10, 0, 10);
 		}
@@ -177,7 +177,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/SlowTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/SlowTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"SlowTOT");
 			h1_STOT[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4
@@ -185,7 +185,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/FastTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FastTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"FastTOT");
 			h1_FTOT[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
@@ -193,7 +193,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/STOT_FTOT SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/STOT_FTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"h2_STOT_FTOT");
 			h2_STOT_FTOT[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
 					COARSE_CT_RANGE/4/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4,
@@ -202,7 +202,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/CHA%2d/Fle-TTS SUB %d SFP %d TAM %2d CHA %2d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FTle-TTS_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Fle-TTS");
 			h1_FTle_TTS[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
 					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
@@ -210,7 +210,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/PCHA_SlowTOT SUB %d SFP %d TAM %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_SlowTOT_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
 			sprintf (chead,"PCHA_SlowTOT");
 			h2_PCHA_STOT[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
 					MAX_CHA_phy, 0, MAX_CHA_phy, 
@@ -219,7 +219,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%2d/PCHA_FastTOT SUB %d SFP %d TAM %2d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_FastTOT_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
 			sprintf (chead,"PCHA_FastTOT");
 			h2_PCHA_FTOT[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
 					MAX_CHA_phy, 0, MAX_CHA_phy, 
@@ -809,7 +809,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_dat = *pl_tmp++;
 		if (l_dat != SUB_SYSTEM_ID)
 		{
-			printf ("ERROR>> 1. data word is not sub-system id: %d \n");
+			printf ("ERROR>> 1. data word is not sub-system id: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", SUB_SYSTEM_ID, l_dat);
 			goto bad_event;
 		}
@@ -819,7 +819,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id !=TS__ID_L16)
 		{
-			printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: %d \n");
+			printf ("ERROR>> 2. data word does not contain 0-15 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_L16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
@@ -829,7 +829,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id != TS__ID_M16)
 		{
-			printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: %d \n");
+			printf ("ERROR>> 3. data word does not contain 16-31 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_M16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
@@ -839,7 +839,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		l_wr_id = l_dat>>16;
 		if (l_wr_id != TS__ID_H16)
 		{
-			printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: %d \n");
+			printf ("ERROR>> 4. data word does not contain 32-47 16bit identifier: \n");
 			printf ("should be: 0x%x, but is: 0x%x\n", TS__ID_H16, l_wr_id);
 		}
 		l_wr_value = (l_dat & 0x0000ffff);
