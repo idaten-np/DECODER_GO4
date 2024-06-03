@@ -19,12 +19,6 @@
 
 #include "TTamex_FullProc.h"
 
-#define MAX_CHA_old_AN_DIFF    MAX_CHA_old_AN / 2
-// JAM 3-jun-2022: we only use the preselected "analysis" channels from event processor here. This is redefinition of TTamex_FullProc.h
-// proper way would be to put all defines here, but we don't do this not to confuse legacy users...
-#define MAX_HITS 1
-
-
 
 class TTamex_FullEvent : public TGo4EventElement {
    public:
