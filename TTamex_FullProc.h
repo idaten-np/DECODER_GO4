@@ -29,6 +29,12 @@
 #define TREND_INTV 60e9 /// ns
 #define TREND_N 30
 
+#define ONLINE_CALIB 1
+#ifdef ONLINE_CALIB
+#define MAX_ENERGY_OI 2000 // keV
+#define Npar 3
+#endif // ONLINE_CALIB
+
 #ifdef WR_TIME_STAMP
 #define SUB_SYSTEM_ID      0x0100
 #define TS__ID_L16         0x03e1
@@ -123,6 +129,18 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
 		TH1 *h1_Multiplicity_LaBr3;
+
+#ifdef ONLINE_CALIB
+		Double_t par_f1_STOT_Energy[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy][Npar] = {0};
+		TH2 *h2_PCHA_Energy[MAX_SSY][MAX_SFP][MAX_TAM];
+		TH1 *h1_Energy[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+		TH2 *h2_Energy_FTle[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
+
+		TH1 *h1_Energy_LaBr3;
+		TH2 *h2_Energy_FTle_LaBr3;
+#endif // ONLINE_CALIB
+
+
 #endif // IDATEN_MONITOR
 
 		TGo4Picture      *fPicture;
