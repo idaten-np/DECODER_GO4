@@ -23,6 +23,8 @@
 
 #define MAX_SPEZIAL 1000000000
 
+#define VETO_EVT 1
+
 #define IDATEN_MONITOR 1
 #define TREND_INTV 60e9 /// ns
 #define TREND_N 30

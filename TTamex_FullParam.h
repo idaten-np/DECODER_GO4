@@ -22,6 +22,7 @@ class TTamex_FullParam : public TGo4Parameter {
       Bool_t   useOldCalibration; // if true, use calibration from autosave file, do not wait until N_CAL_EVT
       Bool_t   resetCalibration;  // control starting new calibration
       Bool_t   dumpBadEvent;  // 
+	  Bool_t   vetoEnable;
 
    ClassDef(TTamex_FullParam,1)
 };
