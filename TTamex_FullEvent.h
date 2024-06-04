@@ -36,7 +36,7 @@ class TTamex_FullEvent : public TGo4EventElement {
 	  }
 #endif // WR_TIME_STAMP
       
-      void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t tts )
+      void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t energy, Double_t tts )
       {
           hit_SSY   .push_back( ssy );
           hit_SFP   .push_back( sfp );
@@ -46,6 +46,7 @@ class TTamex_FullEvent : public TGo4EventElement {
           hit_STle  .push_back( stle );
           hit_FTOT  .push_back( ftot );
           hit_FTle  .push_back( ftle );
+          hit_CalE  .push_back( energy );
           hit_TTS   .push_back( tts );
 
           /*fprintf(stdout,"size %zu\n", hit_SSY.size());
@@ -76,6 +77,7 @@ class TTamex_FullEvent : public TGo4EventElement {
       std::vector<Double_t> hit_STle;
       std::vector<Double_t> hit_FTOT;
       std::vector<Double_t> hit_FTle;
+      std::vector<Double_t> hit_CalE;
       std::vector<Double_t> hit_TTS;
 
       

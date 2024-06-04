@@ -58,6 +58,7 @@ void TTamex_FullEvent::Clear(Option_t *t)
       hit_STle              .clear();
       hit_FTOT              .clear();
       hit_FTle              .clear();
+      hit_CalE              .clear();
       hit_TTS               .clear();
 
 
