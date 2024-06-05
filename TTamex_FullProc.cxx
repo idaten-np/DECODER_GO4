@@ -273,6 +273,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 
 		TFile *file_f1 = new TFile("./f1_STOT_Energy.root","read");
+		TF1 *f1_this;
 		if (file_f1==NULL)
 		{
 			fprintf(stdout, "no calibration file(f1_STOT_Energy.root)\n");
@@ -290,7 +291,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 				iLaBr = iCHA + MAX_CHA_phy*iTAM - 24;
 				if (iLaBr>=0 && iLaBr<24)
 				{
-					TF1 *f1_this = (TF1*) file_f1->Get(Form("f1_STOT_Energy_%02d", iLaBr));
+					f1_this = (TF1*) file_f1->Get(Form("f1_STOT_Energy_%02d", iLaBr));
 					if (f1_this==NULL)
 					{
 						fprintf(stdout, "no f1_STOT_Energy_%02d", iLaBr);
@@ -307,6 +308,8 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 				}
 			}
 		}
+		if (f1_this!=NULL) f1_this->~TF1();
+		if (file_f1!=NULL) file_f1->~TFile();
 
 
 #endif // ONLINE_CALIB
@@ -1037,7 +1040,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		{
 			while (ifp<size)
 			{
-				if (v_SSY[ifp]==0) if(v_SFP[ifp]==1) if (v_TAM[ifp]==6) if (v_TCHA[ifp]==0)
+				if (v_SSY[ifp]==0) if(v_SFP[ifp]==1) if (v_TAM[ifp]==6) if (v_TCHA[ifp]==2)
 				{
 					b_veto=kTRUE;
 				}
@@ -1159,6 +1162,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 									iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
 									if (iLaBr>=0 && iLaBr<24)
 									{
+										if (energy>80)
 										l_hct2_LaBr3++;
 									}
 								}
