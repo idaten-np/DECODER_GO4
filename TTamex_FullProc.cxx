@@ -1094,13 +1094,13 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								fpstart=fp0; fpstop=ifp+0;
 								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];
 								if(l_coarse_diff<-(Int_t)l_pre) l_coarse_diff += COARSE_CT_RANGE;
-								if(l_coarse_diff< (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
+								if(l_coarse_diff> (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
 								ftle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
 								fpstart=fp0; fpstop=jfp+0;
 								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];
 								if(l_coarse_diff<-(Int_t)l_pre) l_coarse_diff += COARSE_CT_RANGE;
-								if(l_coarse_diff< (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
+								if(l_coarse_diff> (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
 								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
 
