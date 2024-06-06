@@ -185,7 +185,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Fle-TTS");
 			h1_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
-					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
+					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
 					);
 		}      
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
@@ -266,7 +266,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		h2_Energy_FTle_LaBr3 = MakeTH2 ('I', chis, chead,
 				MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
 				//COARSE_CT_RANGE, -400e3, 600e3
-				COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
+				COARSE_CT_RANGE/2*3, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME
 				);
 
 
@@ -1092,30 +1092,17 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								stot = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstart]][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
 								fpstart=fp0; fpstop=ifp+0;
-								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<-(COARSE_CT_RANGE>>1)) l_coarse_diff += COARSE_CT_RANGE;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];
+								if(l_coarse_diff<-(Int_t)l_pre) l_coarse_diff += COARSE_CT_RANGE;
+								if(l_coarse_diff< (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
 								ftle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
 								fpstart=fp0; fpstop=jfp+0;
-								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];	if(l_coarse_diff<-(COARSE_CT_RANGE>>1)) l_coarse_diff += COARSE_CT_RANGE;
+								l_coarse_diff = -v_Coarse_ct[fpstart] + v_Coarse_ct[fpstop];
+								if(l_coarse_diff<-(Int_t)l_pre) l_coarse_diff += COARSE_CT_RANGE;
+								if(l_coarse_diff< (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
 								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
-								/*
-								l_coarse_diff = -v_Coarse_ct[ifp+0] + v_Coarse_ct[ifp+1];
-								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-								stot = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+1]];
-
-								l_coarse_diff = -v_Coarse_ct[fp0] + v_Coarse_ct[ifp+0];
-								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fp0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA][v_tdl[ifp+0]];
-
-								l_coarse_diff = -v_Coarse_ct[jfp+0] + v_Coarse_ct[jfp+1];
-								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-								ftot = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[jfp]][v_tdl[jfp+0]] - d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[jfp+1]][v_tdl[jfp+1]];
-
-								l_coarse_diff = -v_Coarse_ct[fp0] + v_Coarse_ct[jfp+0];
-								if(l_coarse_diff<0) l_coarse_diff += COARSE_CT_RANGE;
-								ftle = (Double_t)(l_coarse_diff * CYCLE_TIME) + d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fp0]] - d_finetimecal[iSSY][iSFP][iTAM][iTCHA+1][v_tdl[jfp+0]];
-								*/
 
 #ifdef ONLINE_CALIB
 								iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
