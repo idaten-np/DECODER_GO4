@@ -1040,9 +1040,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		{
 			while (ifp<size)
 			{
-				if (v_SSY[ifp]==0) if(v_SFP[ifp]==1) if (v_TAM[ifp]==6) if (v_TCHA[ifp]==2)
+				if (v_SSY[ifp]==0) if(v_SFP[ifp]==1) if (v_TAM[ifp]==6) if (v_TCHA[ifp]==0+2*2 || v_TCHA[ifp]==1+2*2)
 				{
 					b_veto=kTRUE;
+					break;
 				}
 				ifp++;
 			}
