@@ -36,20 +36,25 @@ TTamex_FullEvent::~TTamex_FullEvent()
 
 //-----------------------------------------------------------
 
+void TTamex_FullEvent::AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t energy, Double_t tts )
+{
+	hit_SSY   .push_back( ssy );
+	hit_SFP   .push_back( sfp );
+	hit_TAM   .push_back( tam );
+	hit_PCHA  .push_back( pcha );
+	hit_STOT  .push_back( stot );
+	hit_STle  .push_back( stle );
+	hit_FTOT  .push_back( ftot );
+	hit_FTle  .push_back( ftle );
+	hit_CalE  .push_back( energy );
+	hit_TTS   .push_back( tts );
+}
+
 void TTamex_FullEvent::Clear(Option_t *t)
 {
 #ifdef WR_TIME_STAMP
 		WR_TS=0;
 #endif // WR_TIME_STAMP
-      /*fprintf(stdout, "hit_SSY.size() %zu\n",hit_SSY.size()); 
-      fprintf(stdout, "hit_SFP.size() %zu\n",hit_SFP.size()); 
-      fprintf(stdout, "hit_TAM.size() %zu\n",hit_TAM.size()); 
-      fprintf(stdout, "hit_PCHA.size() %zu\n",hit_PCHA.size()); 
-      fprintf(stdout, "hit_STOT.size() %zu\n",hit_STOT.size()); 
-      fprintf(stdout, "hit_STle.size() %zu\n",hit_STle.size()); 
-      fprintf(stdout, "hit_FTOT.size() %zu\n",hit_FTOT.size()); 
-      fprintf(stdout, "hit_FTle.size() %zu\n",hit_FTle.size()); 
-      fprintf(stdout, "hit_TTS.size() %zu\n",hit_TTS.size()); fflush(stdout);*/
       hit_SSY               .clear();
       hit_SFP               .clear();
       hit_TAM               .clear();
@@ -60,8 +65,5 @@ void TTamex_FullEvent::Clear(Option_t *t)
       hit_FTle              .clear();
       hit_CalE              .clear();
       hit_TTS               .clear();
-
-
-
 }
 

@@ -36,32 +36,7 @@ class TTamex_FullEvent : public TGo4EventElement {
 	  }
 #endif // WR_TIME_STAMP
       
-      void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t energy, Double_t tts )
-      {
-          hit_SSY   .push_back( ssy );
-          hit_SFP   .push_back( sfp );
-          hit_TAM   .push_back( tam );
-          hit_PCHA  .push_back( pcha );
-          hit_STOT  .push_back( stot );
-          hit_STle  .push_back( stle );
-          hit_FTOT  .push_back( ftot );
-          hit_FTle  .push_back( ftle );
-          hit_CalE  .push_back( energy );
-          hit_TTS   .push_back( tts );
-
-          /*fprintf(stdout,"size %zu\n", hit_SSY.size());
-          fprintf(stdout,"hit_SSY   %u\n"  , hit_SSY   .back());
-          fprintf(stdout,"hit_SFP   %u\n"  , hit_SFP   .back());
-          fprintf(stdout,"hit_TAM   %u\n"  , hit_TAM   .back());
-          fprintf(stdout,"hit_PCHA  %d\n"  , hit_PCHA  .back());
-          fprintf(stdout,"hit_STOT  %.0f\n", hit_STOT  .back());
-          fprintf(stdout,"hit_STle  %.0f\n", hit_STle  .back());
-          fprintf(stdout,"hit_FTOT  %.0f\n", hit_FTOT  .back());
-          fprintf(stdout,"hit_FTle  %.0f\n", hit_FTle  .back());
-          fprintf(stdout,"hit_TTS   %.0f\n", hit_TTS   .back());
-          fprintf(stdout,"\n"); fflush(stdout);*/
-
-      }
+      void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t energy, Double_t tts);
 	  size_t GetN() {return hit_SSY.size();}
 
 
