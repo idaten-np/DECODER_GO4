@@ -225,53 +225,11 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4
 					);
 		}
+#endif // IDATEN_MONITOR
 
 
 
 #ifdef ONLINE_CALIB
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
-		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
-			sprintf (chead,"Energy");
-			h1_Energy[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
-					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
-					);
-		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
-		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_Energy_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
-			sprintf (chead,"PCHA_Energy");
-			h2_PCHA_Energy[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
-					MAX_CHA_phy, 0, MAX_CHA_phy, 
-					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
-					);
-		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
-		{
-			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
-			sprintf (chead,"Energy_FTle");
-			h2_Energy_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
-					MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
-					COARSE_CT_RANGE, -400e3, 600e3
-					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
-					);
-		}
-		sprintf (chis,"Energy_LaBr");
-		sprintf (chead,"Energy_LaBr");
-		h1_Energy_LaBr3 = MakeTH1 ('I', chis, chead,
-				MAX_ENERGY_OI, 0, MAX_ENERGY_OI
-				);
-		sprintf (chis,"Energy_FTle_LaBr");
-		sprintf (chead,"Energy_FTle_LaBr");
-		h2_Energy_FTle_LaBr3 = MakeTH2 ('I', chis, chead,
-				MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
-				//COARSE_CT_RANGE, -400e3, 600e3
-				COARSE_CT_RANGE/2*3, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME
-				);
-
-
-
-
 		TFile *file_f1 = new TFile("./f1_STOT_Energy.root","read");
 		TF1 *f1_this;
 		if (file_f1==NULL)
@@ -312,11 +270,53 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		if (file_f1!=NULL) file_f1->~TFile();
 
 
+#ifdef IDATEN_MONITOR
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"Energy");
+			h1_Energy[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead,
+					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
+					);
+		}
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_Energy_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
+			sprintf (chead,"PCHA_Energy");
+			h2_PCHA_Energy[iSSY][iSFP][iTAM] = MakeTH2 ('I', chis, chead,
+					MAX_CHA_phy, 0, MAX_CHA_phy, 
+					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
+					);
+		}
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		{
+			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
+			sprintf (chead,"Energy_FTle");
+			h2_Energy_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
+					MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
+					COARSE_CT_RANGE, -400e3, 600e3
+					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
+					);
+		}
+		sprintf (chis,"Energy_LaBr");
+		sprintf (chead,"Energy_LaBr");
+		h1_Energy_LaBr3 = MakeTH1 ('I', chis, chead,
+				MAX_ENERGY_OI, 0, MAX_ENERGY_OI
+				);
+		sprintf (chis,"Energy_FTle_LaBr");
+		sprintf (chead,"Energy_FTle_LaBr");
+		h2_Energy_FTle_LaBr3 = MakeTH2 ('I', chis, chead,
+				MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
+				//COARSE_CT_RANGE, -400e3, 600e3
+				COARSE_CT_RANGE/2*3, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME
+				);
+#endif // IDATEN_MONITOR
+
+
 #endif // ONLINE_CALIB
 
 
 
-#endif // IDATEN_MONITOR
 	
 
 /*		l_nc = MAX_CHA_old_AN >>2; // nr. of columns in picture
@@ -391,7 +391,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 {  // called by framework. We dont fill any output event here at all
 	Int_t      l_h, l_i, l_j, l_k;
 	Int_t     size;
-	Int_t     iSSY, iSFP, iTAM, iCHA, iTCHA, iPCHA;
+	UInt_t     iSSY, iSFP, iTAM;
+	Int_t     iCHA, iTCHA, iPCHA;
 	//Bool_t    SlowFast; // 0 for fast, 1 for slow
 						//UInt_t    *pl_se_dat;
 						//UInt_t    *pl_tmp;
@@ -978,9 +979,11 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				}
 			}
 		}
+#ifdef IDATEN_MONITOR
 #ifdef WR_TIME_STAMP
 		l_wr_ts00 = l_wr_ts + TREND_INTV;
 #endif // WR_TIME_STAMP
+#endif // IDATEN_MONITOR
 		fCalibrationDone=kTRUE;
 		printf ("calibration finished \n");  
 		fflush (stdout);
@@ -1051,6 +1054,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 #endif // VETO_EVT
 	
 		ifp=0;
+		fp0=0;
 		while (ifp<size)
 		{
 			if(v_TCHA[ifp]==-1) 
@@ -1113,13 +1117,14 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot-1100e3)
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot-1100e3)*(stot-1100e3)-1);
-
+#ifdef IDATEN_MONITOR
 									h1_Energy[iSSY][iSFP][iTAM][iPCHA]->Fill(energy);
 									h2_PCHA_Energy[iSSY][iSFP][iTAM]->Fill(iPCHA,energy);
 									h2_Energy_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(energy,ftle);
 
 									h1_Energy_LaBr3->Fill(energy);
 									h2_Energy_FTle_LaBr3->Fill(energy,ftle);
+#endif // IDATEN_MONITOR
 								}
 #endif // ONLINE_CALIB
 

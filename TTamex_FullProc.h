@@ -26,8 +26,10 @@
 #define VETO_EVT 1
 
 #define IDATEN_MONITOR 1
+#ifdef IDATEN_MONITOR
 #define TREND_INTV 60e9 /// ns
 #define TREND_N 30
+#endif // IDATEN_MONITOR
 
 #define ONLINE_CALIB 1
 #ifdef ONLINE_CALIB
@@ -129,19 +131,21 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
 		TH1 *h1_Multiplicity_LaBr3;
+#endif // IDATEN_MONITOR
 
 #ifdef ONLINE_CALIB
 		Double_t par_f1_STOT_Energy[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy][Npar] = {0};
+#ifdef IDATEN_MONITOR
 		TH2 *h2_PCHA_Energy[MAX_SSY][MAX_SFP][MAX_TAM];
 		TH1 *h1_Energy[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 		TH2 *h2_Energy_FTle[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_phy];
 
 		TH1 *h1_Energy_LaBr3;
 		TH2 *h2_Energy_FTle_LaBr3;
-#endif // ONLINE_CALIB
 
 
 #endif // IDATEN_MONITOR
+#endif // ONLINE_CALIB
 
 		TGo4Picture      *fPicture;
 
