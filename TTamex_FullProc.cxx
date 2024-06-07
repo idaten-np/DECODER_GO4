@@ -452,6 +452,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	std::vector<Int_t> 	v_tdl;
 	std::vector<Int_t> 	v_avail;
 
+	std::vector<TPHit> v_tphit;
+	std::vector<TPHit>::iterator it_tphit;
+
+	Int_t l_unused_flips = 0;
 
 #ifdef DUMP_BAD_EVENT
 	UInt_t     *pl_tdc_data=0;
@@ -561,6 +565,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	v_Coarse_ct 	.clear();
 	v_tdl        	.clear();
 	v_avail			.clear();
+
+	v_tphit			.clear();
 
 	l_err_catch = 0;
 	l_num_err   = 0;
@@ -1107,7 +1113,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								if(l_coarse_diff> (Int_t)l_post) l_coarse_diff -= COARSE_CT_RANGE;
 								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
-
 #ifdef ONLINE_CALIB
 								iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
 								if (iLaBr>=0 && iLaBr<24)
@@ -1117,14 +1122,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot-1100e3)
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot-1100e3)*(stot-1100e3)-1);
-#ifdef IDATEN_MONITOR
-									h1_Energy[iSSY][iSFP][iTAM][iPCHA]->Fill(energy);
-									h2_PCHA_Energy[iSSY][iSFP][iTAM]->Fill(iPCHA,energy);
-									h2_Energy_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(energy,ftle);
-
-									h1_Energy_LaBr3->Fill(energy);
-									h2_Energy_FTle_LaBr3->Fill(energy,ftle);
-#endif // IDATEN_MONITOR
 								}
 #endif // ONLINE_CALIB
 
@@ -1135,32 +1132,11 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										energy, d_tts
 										);
 								//fprintf(stdout, "fOutput->AddHit(%d, %d, %d, %d,\t %.0f, %.0f, %.0f, %.0f, %.0f  );\n", iSSY, iSFP, iTAM, iPCHA, stot, stle, ftot, ftle, d_tts);
-#ifdef IDATEN_MONITOR
-
-#ifdef VETO_EVT
-								if(!b_veto)
-#endif // VETO_EVT
-								{
-									h1_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(stot);
-									h1_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(ftot);
-									h2_STOT_FTOT[iSSY][iSFP][iTAM][iPCHA]->Fill(stot, ftot);
-									h2_trend_STOT[iSSY][iSFP][iTAM][iPCHA]->Fill(TREND_N-1,stot);
-
-									h1_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(ftle);
-									h2_STOT_FTle[iSSY][iSFP][iTAM][iPCHA]->Fill(stot,ftle);
-
-									h2_PCHA_STOT[iSSY][iSFP][iTAM]->Fill(iPCHA,stot);
-									h2_PCHA_FTOT[iSSY][iSFP][iTAM]->Fill(iPCHA,ftot);
-
-									iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
-									if (iLaBr>=0 && iLaBr<24)
-									{
-										if (energy>80)
-										l_hct2_LaBr3++;
-									}
-								}
-#endif // IDATEN_MONITOR
-
+								v_tphit.push_back(TPHit{iSSY, iSFP, iTAM, iPCHA,
+											stot, stle,
+											ftot, ftle,
+											energy, d_tts
+											});
 								v_avail[ifp+0]=0;
 								v_avail[ifp+1]=0;
 								v_avail[jfp+0]=0;
@@ -1175,20 +1151,72 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 			ifp++;
 		}
 
-		for (ifp=0; ifp<size; ifp++) if (v_avail[ifp])
-		{
-			l_bad_evt_found=1;
-			goto bad_event2;
-		}
-
-		test_good++;
 
 
 #ifdef IDATEN_MONITOR
-		h1_Multiplicity_LaBr3->Fill(fOutput->GetN());
-		//h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
+		for (it_tphit=v_tphit.begin(); it_tphit!=v_tphit.end(); ++it_tphit)
+		{
+#ifdef VETO_EVT
+			if(!b_veto)
+#endif // VETO_EVT
+			{
+				h1_STOT			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT);
+				h1_FTOT			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->FTOT);
+				h2_STOT_FTOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT, it_tphit->FTOT);
+				h2_trend_STOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(TREND_N-1,it_tphit->STOT);
+
+				h1_FTle			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->FTle);
+				h2_STOT_FTle	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT,it_tphit->FTle);
+
+				h2_PCHA_STOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->STOT);
+				h2_PCHA_FTOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->FTOT);
+
+#ifdef ONLINE_CALIB
+				h1_Energy		[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->CalE);
+				h2_PCHA_Energy	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->CalE);
+				h2_Energy_FTle	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->CalE,it_tphit->FTle);
+
+				h1_Energy_LaBr3																->Fill(it_tphit->CalE);
+				h2_Energy_FTle_LaBr3														->Fill(it_tphit->CalE,it_tphit->FTle);
+#endif // ONLINE_CALIB
+
+				iLaBr = it_tphit->PCHA + MAX_CHA_phy*it_tphit->TAM - 24;
+				if (iLaBr>=0 && iLaBr<24)
+				{
+					//if (it_tphit->CalE>80)
+						l_hct2_LaBr3++;
+				}
+			}
+		}
+
+		//h1_Multiplicity_LaBr3->Fill(fOutput->GetN());
+		h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
 
 #endif // IDATEN_MONITOR
+
+
+
+
+
+		for (ifp=0; ifp<size; ifp++) if (v_avail[ifp])
+		{
+			l_unused_flips++;
+			l_bad_evt_found=1;
+		}
+
+
+
+
+		if (l_unused_flips>0)
+		{
+			test_bad1++;
+			goto bad_event2;
+		}
+		else 
+		{
+			test_good++;
+		}
+
 
 	}
 
@@ -1230,7 +1258,7 @@ bad_event:
 
 bad_event2:
 #ifdef DUMP_BAD_EVENT
-	if (l_bad_evt_found == 1 && fPar->dumpBadEvent)
+	if (l_unused_flips > 0 && fPar->dumpBadEvent)
 	{
 		fprintf(stdout,"v_SSY.size() %d\n", (int)v_SSY.size());
 		for (ifp=0; ifp<size; ifp++) //if (v_avail[ifp])
@@ -1248,7 +1276,6 @@ bad_event2:
 			fprintf(stdout,"\n");
 			fflush(stdout);
 		}
-		test_bad1++;
 		fprintf(stdout, "test_good %llu test_bad1 %llu ratio %f\n", test_good, test_bad1 ,(float)test_bad1/test_good);
 	}
 #endif // DUMP_BAD_EVENT

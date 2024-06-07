@@ -176,3 +176,23 @@ static ULong64_t test_bad3=0;
 
 
 //----------------------------END OF GO4 SOURCE FILE ---------------------
+
+
+#ifndef __TPHIT
+#define __TPHIT
+struct TPHit
+{
+      UInt_t 	SSY;
+      UInt_t 	SFP;
+      UInt_t 	TAM;
+      Int_t  	PCHA;
+      Double_t  STOT;
+      Double_t  STle;
+      Double_t  FTOT;
+      Double_t  FTle;
+      Double_t  CalE;
+      Double_t  TTS;
+};
+#endif // __TPHIT
+
+
