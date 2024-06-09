@@ -257,10 +257,13 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					}
 					else
 					{
-						for (int ipar=0; ipar<Npar; ipar++)
+						if (f1_this->GetNpar()!=Npar)
+						{
+							fprintf(stdout,"1_this->GetNpar()!=Npar\n");
+						}
+						for (int ipar=0; ipar<f1_this->GetNpar(); ipar++)
 						{
 							par_f1_STOT_Energy[iSSY][iSFP][iTAM][iCHA][ipar] = f1_this->GetParameter(ipar);
-							fprintf(stdout,"par_f1_STOT_Energy[iSSY][iSFP][iTAM][iCHA][ipar] = f1_this->GetParameter(ipar);\n");
 						}
 					}
 				}
@@ -1117,11 +1120,17 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
 								if (iLaBr>=0 && iLaBr<24)
 								{
-									//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
+									/*//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
 									energy = 
 										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot-1100e3)
-										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot-1100e3)*(stot-1100e3)-1);
+										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot-1100e3)*(stot-1100e3)-1);*/
+									//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
+									energy = 
+										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
+										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot/1000-1100)
+										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot/1000-1100)*(stot/1000-1100)-1);
+										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][3] * (4*(stot/1000-1100)*(stot/1000-1100)*(stot/1000-1100)-3*(stot/1000-1100));
 								}
 #endif // ONLINE_CALIB
 

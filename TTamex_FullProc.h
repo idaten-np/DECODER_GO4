@@ -34,7 +34,7 @@
 #define ONLINE_CALIB 1
 #ifdef ONLINE_CALIB
 #define MAX_ENERGY_OI 2000 // keV
-#define Npar 3
+#define Npar 4
 #endif // ONLINE_CALIB
 
 #ifdef WR_TIME_STAMP
