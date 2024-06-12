@@ -26,4 +26,5 @@ mkdir -p ${OutputPath}
 for i in {0001..0008}
 do
 	go4analysis -file ${InputPath}/${InputFile}_${i}.lmd -outevt-class TTamex_FullEvent -enable-store -store ${OutputPath}/${OutputFile}_${i}.root -rate
+	touch --reference=${InputPath}/${InputFile}_${i}.lmd ${OutputPath}/${OutputFile}_${i}.root
 done
