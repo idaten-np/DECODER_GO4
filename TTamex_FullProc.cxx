@@ -79,7 +79,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 	Text_t chis [256];
 	Text_t chead[256];
 	Int_t iSSY, iSFP, iTAM, iCHA, iTCHA, iPCHA;
-	Int_t iLaBr;
+	Int_t iLaBr; 
 
 	// Creation of histograms (check if restored from auto save file):
 	if(GetHistogram("didi")==0)
@@ -404,7 +404,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	int jfp=0;
 	int fp0;
 	int fpstart, fpstop;
-	Double_t    stot=0, ftot=0, stle=0, ftle=0;
+	Double_t    stot=0, ftot=0, stle=0, ftle=0, calE=0;
 	Double_t     d_tts=0;
 	Double_t    energy=0;
 #ifdef VETO_EVT
@@ -454,9 +454,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	std::vector<Int_t> 	v_Coarse_ct;
 	std::vector<Int_t> 	v_tdl;
 	std::vector<Int_t> 	v_avail;
-
-	std::vector<TPHit> v_tphit;
-	std::vector<TPHit>::iterator it_tphit;
 
 	Int_t l_unused_flips = 0;
 
@@ -568,8 +565,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	v_Coarse_ct 	.clear();
 	v_tdl        	.clear();
 	v_avail			.clear();
-
-	v_tphit			.clear();
 
 	l_err_catch = 0;
 	l_num_err   = 0;
@@ -1120,11 +1115,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								iLaBr = iPCHA + MAX_CHA_phy*iTAM;
 								if (iLaBr>=0 && iLaBr<48)
 								{
-									/*//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
-									energy = 
-										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
-										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot-1100e3)
-										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot-1100e3)*(stot-1100e3)-1);*/
 									//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
 									energy = 
 										par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][0]
@@ -1141,13 +1131,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										energy, d_tts
 										);
 								//fprintf(stdout, "fOutput->AddHit(%d, %d, %d, %d,\t %.0f, %.0f, %.0f, %.0f, %.0f  );\n", iSSY, iSFP, iTAM, iPCHA, stot, stle, ftot, ftle, d_tts);
-#ifdef IDATEN_MONITOR
-								v_tphit.push_back(TPHit{iSSY, iSFP, iTAM, iPCHA,
-											stot, stle,
-											ftot, ftle,
-											energy, d_tts
-											});
-#endif // IDATEN_MONITOR
 								v_avail[ifp+0]=0;
 								v_avail[ifp+1]=0;
 								v_avail[jfp+0]=0;
@@ -1163,38 +1146,46 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		}
 
 
-
 #ifdef IDATEN_MONITOR
-		for (it_tphit=v_tphit.begin(); it_tphit!=v_tphit.end(); it_tphit++)
+		for (int i=0; i<fOutput->GetN(); i++)
 		{
 #ifdef VETO_EVT
 			if(!b_veto)
 #endif // VETO_EVT
 			{
-				h1_STOT			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT);
-				h1_FTOT			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->FTOT);
-				h2_STOT_FTOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT, it_tphit->FTOT);
-				h2_trend_STOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(TREND_N-1,it_tphit->STOT);
+				iSSY = 0; // iSSY = fOutput->GetSSY (i);
+				iSFP = 1; // iSFP = fOutput->GetSFP (i);
+				iTAM = fOutput->GetTAM (i);
+				iPCHA= fOutput->GetPCHA (i);
+				stot = fOutput->GetSTOT (i);
+				ftot = fOutput->GetFTOT (i);
+				ftle = fOutput->GetFTle (i);
 
-				h1_FTle			[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->FTle);
-				h2_STOT_FTle	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->STOT,it_tphit->FTle);
+				h1_STOT			[iSSY][iSFP][iTAM][iPCHA]	->Fill(stot);
+				h1_FTOT			[iSSY][iSFP][iTAM][iPCHA]	->Fill(ftot);
+				h2_STOT_FTOT	[iSSY][iSFP][iTAM][iPCHA]	->Fill(stot, ftot);
+				h2_trend_STOT	[iSSY][iSFP][iTAM][iPCHA]	->Fill(TREND_N-1,stot);
 
-				h2_PCHA_STOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->STOT);
-				h2_PCHA_FTOT	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->FTOT);
+				h1_FTle			[iSSY][iSFP][iTAM][iPCHA]	->Fill(ftle);
+				h2_STOT_FTle	[iSSY][iSFP][iTAM][iPCHA]	->Fill(stot,ftle);
+
+				h2_PCHA_STOT	[iSSY][iSFP][iTAM]			->Fill(iPCHA,stot);
+				h2_PCHA_FTOT	[iSSY][iSFP][iTAM]			->Fill(iPCHA,ftot);
 
 #ifdef ONLINE_CALIB
-				h1_Energy		[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->CalE);
-				h2_PCHA_Energy	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM]					->Fill(it_tphit->PCHA,it_tphit->CalE);
-				h2_Energy_FTle	[it_tphit->SSY][it_tphit->SFP][it_tphit->TAM][it_tphit->PCHA]	->Fill(it_tphit->CalE,it_tphit->FTle);
+				calE = fOutput->GetCalE (i);
+				h1_Energy		[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE);
+				h2_PCHA_Energy	[iSSY][iSFP][iTAM]			->Fill(iPCHA,calE);
+				h2_Energy_FTle	[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE,ftle);
 
-				h1_Energy_LaBr3																->Fill(it_tphit->CalE);
-				h2_Energy_FTle_LaBr3														->Fill(it_tphit->CalE,it_tphit->FTle);
+				h1_Energy_LaBr3								->Fill(calE);
+				h2_Energy_FTle_LaBr3						->Fill(calE,ftle);
 #endif // ONLINE_CALIB
 
-				iLaBr = it_tphit->PCHA + MAX_CHA_phy*it_tphit->TAM;
+				iLaBr = iPCHA + MAX_CHA_phy*iTAM;
 				if (iLaBr>=0 && iLaBr<48)
 				{
-					//if (it_tphit->CalE>80)
+					//if (calE>80)
 						l_hct2_LaBr3++;
 				}
 			}
@@ -1204,8 +1195,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		h1_Multiplicity_LaBr3->Fill(l_hct2_LaBr3);
 
 #endif // IDATEN_MONITOR
-
-
 
 
 
