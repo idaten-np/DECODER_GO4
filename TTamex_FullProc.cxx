@@ -455,9 +455,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	std::vector<Int_t> 	v_tdl;
 	std::vector<Int_t> 	v_avail;
 
-	std::vector<TPHit> v_tphit;
-	std::vector<TPHit>::iterator it_tphit;
-
 	Int_t l_unused_flips = 0;
 
 #ifdef DUMP_BAD_EVENT
@@ -568,8 +565,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	v_Coarse_ct 	.clear();
 	v_tdl        	.clear();
 	v_avail			.clear();
-
-	v_tphit			.clear();
 
 	l_err_catch = 0;
 	l_num_err   = 0;
