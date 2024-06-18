@@ -1141,11 +1141,13 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										energy, d_tts
 										);
 								//fprintf(stdout, "fOutput->AddHit(%d, %d, %d, %d,\t %.0f, %.0f, %.0f, %.0f, %.0f  );\n", iSSY, iSFP, iTAM, iPCHA, stot, stle, ftot, ftle, d_tts);
+#ifdef IDATEN_MONITOR
 								v_tphit.push_back(TPHit{iSSY, iSFP, iTAM, iPCHA,
 											stot, stle,
 											ftot, ftle,
 											energy, d_tts
 											});
+#endif // IDATEN_MONITOR
 								v_avail[ifp+0]=0;
 								v_avail[ifp+1]=0;
 								v_avail[jfp+0]=0;
