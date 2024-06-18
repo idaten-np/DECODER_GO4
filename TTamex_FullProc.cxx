@@ -246,8 +246,8 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			fprintf(stdout, "calibration file(f1_STOT_Energy.root) found.\n");
 			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 			{
-				iLaBr = iCHA + MAX_CHA_phy*iTAM - 24;
-				if (iLaBr>=0 && iLaBr<24)
+				iLaBr = iCHA + MAX_CHA_phy*iTAM;
+				if (iLaBr>=0 && iLaBr<48)
 				{
 					f1_this = (TF1*) file_f1->Get(Form("f1_STOT_Energy_%02d", iLaBr));
 					if (f1_this==NULL)
@@ -1117,8 +1117,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 								stle = (Double_t)(l_coarse_diff * CYCLE_TIME) -( -d_finetimecal[iSSY][iSFP][iTAM][MAX_CHA_tam-1][v_tdl[fpstart]] + d_finetimecal[iSSY][iSFP][iTAM][v_TCHA[fpstop]][v_tdl[fpstop]]);
 
 #ifdef ONLINE_CALIB
-								iLaBr = iPCHA + MAX_CHA_phy*iTAM - 24;
-								if (iLaBr>=0 && iLaBr<24)
+								iLaBr = iPCHA + MAX_CHA_phy*iTAM;
+								if (iLaBr>=0 && iLaBr<48)
 								{
 									/*//[0]+[1]*(x-1100e3)+[2]*(2*(x-1100e3)**2-1)
 									energy = 
@@ -1163,7 +1163,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 
 #ifdef IDATEN_MONITOR
-		for (it_tphit=v_tphit.begin(); it_tphit!=v_tphit.end(); ++it_tphit)
+		for (it_tphit=v_tphit.begin(); it_tphit!=v_tphit.end(); it_tphit++)
 		{
 #ifdef VETO_EVT
 			if(!b_veto)
@@ -1189,8 +1189,8 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				h2_Energy_FTle_LaBr3														->Fill(it_tphit->CalE,it_tphit->FTle);
 #endif // ONLINE_CALIB
 
-				iLaBr = it_tphit->PCHA + MAX_CHA_phy*it_tphit->TAM - 24;
-				if (iLaBr>=0 && iLaBr<24)
+				iLaBr = it_tphit->PCHA + MAX_CHA_phy*it_tphit->TAM;
+				if (iLaBr>=0 && iLaBr<48)
 				{
 					//if (it_tphit->CalE>80)
 						l_hct2_LaBr3++;
