@@ -31,7 +31,7 @@
 #define TREND_N 30
 #endif // IDATEN_MONITOR
 
-#define ONLINE_CALIB 1
+//#define ONLINE_CALIB 1
 #ifdef ONLINE_CALIB
 #define MAX_ENERGY_OI 2000 // keV
 #define Npar 4
