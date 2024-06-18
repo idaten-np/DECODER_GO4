@@ -38,7 +38,16 @@ class TTamex_FullEvent : public TGo4EventElement {
       
       void AddHit(UInt_t ssy, UInt_t sfp, UInt_t tam, Int_t pcha, Double_t stot, Double_t stle, Double_t ftot, Double_t ftle, Double_t energy, Double_t tts);
 	  size_t GetN() {return hit_SSY.size();}
-
+	  UInt_t	  GetSSY (size_t i) {return   hit_SSY .at(i);}
+	  UInt_t      GetSFP (size_t i) {return   hit_SFP .at(i);}
+	  UInt_t      GetTAM (size_t i) {return   hit_TAM .at(i);}
+	  Int_t       GetPCHA(size_t i) {return   hit_PCHA.at(i);}
+	  Double_t    GetSTOT(size_t i) {return   hit_STOT.at(i);}
+	  Double_t    GetSTle(size_t i) {return   hit_STle.at(i);}
+	  Double_t    GetFTOT(size_t i) {return   hit_FTOT.at(i);}
+	  Double_t    GetFTle(size_t i) {return   hit_FTle.at(i);}
+	  Double_t    GetCalE(size_t i) {return   hit_CalE.at(i);}
+	  Double_t    GetTTS (size_t i) {return   hit_TTS .at(i);}
 
    private:
 #ifdef WR_TIME_STAMP
