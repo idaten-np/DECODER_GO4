@@ -86,7 +86,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 	{
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++)
 		{
-			for (iSFP=0; iSFP<MAX_SFP; iSFP++)
+			for (iSFP=1; iSFP<MAX_SFP; iSFP++)
 			{
 				for (iTAM=0; iTAM<MAX_TAM; iTAM++)
 				{
@@ -104,7 +104,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++)
 		{
-			for (iSFP=0; iSFP<MAX_SFP; iSFP++)
+			for (iSFP=1; iSFP<MAX_SFP; iSFP++)
 			{
 				for (iTAM=0; iTAM<MAX_TAM; iTAM++)
 				{
@@ -118,19 +118,19 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			}
 		}      
 
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"COARSE_COUNTER/SUB%d/SFP%d/TAMEX%02d/COARSE_COUNTER_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"COARSE_COUNTER_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA);
 			h_cct[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, COARSE_CT_RANGE, 0, COARSE_CT_RANGE);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%02d/CHA%02d/CALIB_TIME_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB_TIME_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA);
 			h_tim_2[iSSY][iSFP][iTAM][iCHA] = MakeTH1 ('I', chis, chead, N_BIN_T, 0, N_BIN_T);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"CALIB/SUB%d/SFP%d/TAMEX%02d/CHA%02d/CALIB SUM_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"CALIB_SUM_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA);
@@ -141,7 +141,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		sprintf (chead,"MULTIPLICITY_LaBr3_hit");
 		h1_Multiplicity_LaBr3 = MakeTH1 ('I', chis, chead, 48, 0, 48);
 
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 		{
 			sprintf (chis,"MULTIPLICITY0/SUB%d/SFP%d/TAMEX%02d/MULTIPLICITY0_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"MULTIPLICITY0");
@@ -155,7 +155,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		}
 
 
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/SlowTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"SlowTOT_SUB%d_SFP%d_TAM%02d_CHA%02d; STOT [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -163,7 +163,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4
 					);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FastTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"FastTOT_SUB%d_SFP%d_TAM%02d_CHA%02d; FTOT [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -171,7 +171,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/STOT_FTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"STOT_FTOT_SUB%d_SFP%d_TAM%02d_CHA%02d; STOT [ps]; FTOT [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -180,7 +180,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"FTle_SUB%d_SFP%d_TAM%02d_CHA%02d; FTle [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -188,7 +188,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
 					);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/STOT_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"STOT_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d; STOT [ps]; FTle [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -199,7 +199,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
 					);
 		}      
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_SlowTOT_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
 			sprintf (chead,"PCHA_SlowTOT_SUB%d_SFP%d_TAM%02d; PCHA; STOT [ps]", iSSY, iSFP, iTAM);
@@ -208,7 +208,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4
 					);
 		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_FastTOT_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
 			sprintf (chead,"PCHA_FastTOT_SUB%d_SFP%d_TAM%02d; PCHA; FTOT [ps]", iSSY, iSFP, iTAM);
@@ -217,7 +217,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4/8
 					);
 		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"TREND/SUB%d/SFP%d/TAMEX%02d/CHA%02d/trendSTOT_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"trend_STOT_SUB%d_SFP%d_TAM%02d_CHA%02d; %d sec/bin", iSSY, iSFP, iTAM, iCHA, Int_t(TREND_INTV/1e9));
@@ -242,7 +242,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		if (file_f1==NULL)
 		{
 			fprintf(stdout, "no calibration file(f1_STOT_Energy.root)\n");
-			/*for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+			/*for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 			{
 				for (int ipar=0; ipar<Npar; ipar++)
 					par_f1_STOT_Energy[iSSY][iSFP][iTAM][iCHA][ipar] = 0;
@@ -251,7 +251,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		else
 		{
 			fprintf(stdout, "calibration file(f1_STOT_Energy.root) found.\n");
-			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 			{
 				iLaBr = iCHA + MAX_CHA_phy*iTAM;
 				if (iLaBr>=0 && iLaBr<48)
@@ -281,7 +281,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 
 #ifdef IDATEN_MONITOR
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Energy_SUB%d_SFP%d_TAM%02d_CHA%02d; CalE [keV]", iSSY, iSFP, iTAM, iCHA);
@@ -289,7 +289,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
 					);
 		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) 
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/PCHA_Energy_SUB%d_SFP%d_TAM%02d", iSSY, iSFP, iTAM, iSSY, iSFP, iTAM);
 			sprintf (chead,"PCHA_Energy_SUB%d_SFP%d_TAM%02d; PCHA; Energy [keV]", iSSY, iSFP, iTAM);
@@ -298,7 +298,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					MAX_ENERGY_OI, 0, MAX_ENERGY_OI
 					);
 		}
-		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+		for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
 		{
 			sprintf (chis,"By_PCha/SUB%d/SFP%d/TAMEX%02d/CHA%02d/Energy_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d", iSSY, iSFP, iTAM, iCHA, iSSY, iSFP, iTAM, iCHA);
 			sprintf (chead,"Energy_FTle_SUB%d_SFP%d_TAM%02d_CHA%02d; Energy [kev]; FTle [ps]", iSSY, iSFP, iTAM, iCHA);
@@ -318,7 +318,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 		h2_Energy_FTle_LaBr3 = MakeTH2 ('I', chis, chead,
 				MAX_ENERGY_OI, 0, MAX_ENERGY_OI,
 				//COARSE_CT_RANGE, -400e3, 600e3
-				COARSE_CT_RANGE/2*3, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME
+				COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
 				);
 #endif // IDATEN_MONITOR
 
@@ -400,7 +400,7 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++)
 		{
-			for (iSFP=0; iSFP<MAX_SFP; iSFP++)
+			for (iSFP=1; iSFP<MAX_SFP; iSFP++)
 			{
 				for (iTAM=0; iTAM<MAX_TAM; iTAM++)
 				{
@@ -551,7 +551,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 		for (iSSY=0; iSSY<MAX_SSY; iSSY++)
 		{
-			for (iSFP=0; iSFP<MAX_SFP; iSFP++)
+			for (iSFP=1; iSFP<MAX_SFP; iSFP++)
 			{
 				for (iTAM=0; iTAM<MAX_TAM; iTAM++)
 				{
@@ -583,7 +583,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 	//printf ("next     event \n"); sleep (1);
 
-	for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
+	for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_tam; iCHA++)
 	{
 		l_hct2[iSSY][iSFP][iTAM][iCHA][0]=0;
 		l_hct2[iSSY][iSFP][iTAM][iCHA][1]=0;
@@ -986,7 +986,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		{
 			fprintf(stdout,"fPar->useOldCalibration\n"); fflush(stdout);
 			fprintf(fd_out,"fPar->useOldCalibration\n"); fflush(fd_out);
-			/*for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
+			/*for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=1; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
 			  {
 			  for(l_i=0; l_i<N_BIN_T; l_i++)
 			  d_finetimecal[iSSY][iSFP][iTAM][iTCHA][l_i] = ((double) h_sum_2[iSSY][iSFP][iTAM][iTCHA]->GetBinContent(l_i+1) / (double) h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()) * CYCLE_TIME;
@@ -994,7 +994,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		}
 		//else
 		{
-			for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=0; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
+			for(iSSY=0; iSSY<MAX_SSY; iSSY++) for(iSFP=1; iSFP<MAX_SFP; iSFP++) for(iTAM=0; iTAM<MAX_TAM; iTAM++) for(iTCHA=0; iTCHA<MAX_CHA_tam; iTCHA++)
 			{
 				//fprintf(stdout,"h_tim_2[iSSY%u][iSFP%u][iTAM%u][iCHA%d]->GetEntries()==%.0f\n",iSSY,iSFP,iTAM,iCHA, h_tim_2[iSSY][iSFP][iTAM][iCHA]->GetEntries());
 				//if(h_tim_2[iSSY][iSFP][iTAM][iTCHA]->GetEntries()<N_BIN_T*4) // 600*4
@@ -1048,7 +1048,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 		{
 			//fprintf(stdout, "l_wr_ts %llu l_wr_ts00 %llu diff %llu d %llu\n", l_wr_ts, l_wr_ts00, l_wr_ts - l_wr_ts00, (ULong64_t)TREND_INTV); fflush(stdout);
 			l_wr_ts00 += TREND_INTV;
-			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=0; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++) 
+			for (iSSY=0; iSSY<MAX_SSY; iSSY++) for (iSFP=1; iSFP<MAX_SFP; iSFP++) for (iTAM=0; iTAM<MAX_TAM; iTAM++) for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++) 
 			{
 				for (int ibiny=0; ibiny<COARSE_CT_RANGE/4; ibiny++) 
 				{
@@ -1219,22 +1219,22 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				h2_PCHA_Energy	[iSSY][iSFP][iTAM]			->Fill(iPCHA,calE);
 				h2_Energy_FTle	[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE,ftle);
 
-				h1_Energy_LaBr3								->Fill(calE);
-				h2_Energy_FTle_LaBr3						->Fill(calE,ftle);
 #endif // ONLINE_CALIB
 
 				iLaBr = iPCHA + MAX_CHA_phy*iTAM;
 				if (iLaBr>=0 && iLaBr<48)
 				{
 					l_hct2_LaBr3++;
+					h1_Energy_LaBr3								->Fill(calE);
+					h2_Energy_FTle_LaBr3						->Fill(calE,ftle);
 				}
 				if (iTAM== 6 && iPCHA== 0)
 				{
 					for (int j=0; j<fOutput->GetN(); j++) if (fOutput->GetTAM(j)== 6) if (abs(fOutput->GetFTle(j)-ftle)<100e3)
 					{
 						if (fOutput->GetPCHA(j)==1){	ppac_tx1 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0001;}
-						if (fOutput->GetPCHA(j)==2){	ppac_tx2 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0010;}
-						if (fOutput->GetPCHA(j)==3){	ppac_ty1 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0100;}
+						if (fOutput->GetPCHA(j)==6){	ppac_tx2 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0010;}
+						if (fOutput->GetPCHA(j)==5){	ppac_ty1 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0100;}
 						if (fOutput->GetPCHA(j)==4){	ppac_ty2 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b1000;}
 					}
 
