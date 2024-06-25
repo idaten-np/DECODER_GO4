@@ -226,6 +226,12 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 					COARSE_CT_RANGE/4, 0, COARSE_CT_RANGE*CYCLE_TIME/4
 					);
 		}
+		h2_ppac_position = MakeTH2('I', 
+			Form("ppac_pos"),
+			Form("ppac_pos; x; y;"),
+			200,-100e3,100e3, 
+			200,-100e3,100e3
+			);
 #endif // IDATEN_MONITOR
 
 
@@ -469,6 +475,10 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	Int_t	l_hct2[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3];
 	Int_t   l_hct2_LaBr3;
 
+	Int_t ppac_mask;
+	Double_t ppac_tx1, ppac_tx2, ppac_ty1, ppac_ty2;
+	Double_t ppac_x, ppac_y;
+
 	std::vector<UInt_t> 	v_SSY;
 	std::vector<UInt_t> 	v_SFP;
 	std::vector<UInt_t> 	v_TAM;
@@ -588,6 +598,14 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 	v_Coarse_ct 	.clear();
 	v_tdl        	.clear();
 	v_avail			.clear();
+
+	ppac_mask=0;
+	ppac_tx1=-999e20;
+	ppac_tx2=-999e20;
+	ppac_ty1=-999e20;
+	ppac_ty2=-999e20;
+	ppac_x=-999e20;
+	ppac_y=-999e20;
 
 	l_err_catch = 0;
 	l_num_err   = 0;
@@ -1209,6 +1227,23 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				if (iLaBr>=0 && iLaBr<48)
 				{
 					l_hct2_LaBr3++;
+				}
+				if (iTAM== 6 && iPCHA== 0)
+				{
+					for (int j=0; j<fOutput->GetN(); j++) if (fOutput->GetTAM(j)== 6) if (abs(fOutput->GetFTle(j)-ftle)<100e3)
+					{
+						if (fOutput->GetPCHA(j)==1){	ppac_tx1 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0001;}
+						if (fOutput->GetPCHA(j)==2){	ppac_tx2 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0010;}
+						if (fOutput->GetPCHA(j)==3){	ppac_ty1 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b0100;}
+						if (fOutput->GetPCHA(j)==4){	ppac_ty2 = fOutput->GetFTle(j); ppac_mask = ppac_mask | 0b1000;}
+					}
+
+					if (ppac_mask==0b1111)
+					{
+						ppac_x = (ppac_tx1-ppac_tx2)/1.; // delay will be determined later
+						ppac_y = (ppac_ty1-ppac_ty2)/1.;
+						h2_ppac_position->Fill(ppac_x, ppac_y);
+					}
 				}
 			}
 		}
