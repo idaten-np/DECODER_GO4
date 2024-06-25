@@ -131,6 +131,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1 *h1_Multiplicity[MAX_SSY][MAX_SFP][MAX_TAM][MAX_CHA_tam][3]; // 0 for trailing, 1 for leading, 2 for TOT
 		TH1 *h1_Multiplicity_LaBr3;
+		TH2 *h2_ppac_position;
 #endif // IDATEN_MONITOR
 
 #ifdef ONLINE_CALIB
