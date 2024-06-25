@@ -31,7 +31,7 @@
 #define TREND_N 30
 #endif // IDATEN_MONITOR
 
-//#define ONLINE_CALIB 1
+#define ONLINE_CALIB 1
 #ifdef ONLINE_CALIB
 #define MAX_ENERGY_OI 2000 // keV
 #define Npar 4
@@ -142,6 +142,7 @@ class TTamex_FullProc : public TGo4EventProcessor {
 
 		TH1 *h1_Energy_LaBr3;
 		TH2 *h2_Energy_FTle_LaBr3;
+
 
 
 #endif // IDATEN_MONITOR

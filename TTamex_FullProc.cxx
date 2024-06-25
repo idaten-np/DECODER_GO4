@@ -194,7 +194,8 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 			sprintf (chead,"STOT_FTle");
 			h2_STOT_FTle[iSSY][iSFP][iTAM][iCHA] = MakeTH2 ('I', chis, chead,
 					COARSE_CT_RANGE/2, 0, COARSE_CT_RANGE*CYCLE_TIME/4,
-					COARSE_CT_RANGE, -400e3, 600e3
+					//COARSE_CT_RANGE, -400e3, 600e3
+					COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME, COARSE_CT_RANGE*CYCLE_TIME
 					//COARSE_CT_RANGE, -COARSE_CT_RANGE*CYCLE_TIME/2, COARSE_CT_RANGE*CYCLE_TIME/2
 					);
 		}      
@@ -1185,8 +1186,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 				iLaBr = iPCHA + MAX_CHA_phy*iTAM;
 				if (iLaBr>=0 && iLaBr<48)
 				{
-					//if (calE>80)
-						l_hct2_LaBr3++;
+					l_hct2_LaBr3++;
 				}
 			}
 		}
