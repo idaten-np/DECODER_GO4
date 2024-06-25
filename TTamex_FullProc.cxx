@@ -319,8 +319,30 @@ TTamex_FullProc::TTamex_FullProc(const char* name) : TGo4EventProcessor(name)
 
 #endif // ONLINE_CALIB
 
+#ifdef IDATEN_MONITOR
+		fPicture = new TGo4Picture("KL_STOTs","KL_STOTs");
+		fPicture->SetDivision(1,3);
+		fPicture->Pic(0,0)->AddObject(h2_PCHA_STOT[0][1][0]);
+		fPicture->Pic(0,1)->AddObject(h2_PCHA_STOT[0][1][1]);
+		fPicture->Pic(0,2)->AddObject(h2_PCHA_STOT[0][1][2]);
+		AddPicture(fPicture);
+
+		for (iTAM=0; iTAM<MAX_TAM; iTAM++)
+		{
+			fPicture = new TGo4Picture(
+					Form("STOT_FTOT_tam%02d",iTAM),
+					Form("STOT_FTOT_tam%02d",iTAM)
+					);
+			fPicture->SetDivision(4,4);
+			for (iCHA=0; iCHA<MAX_CHA_phy; iCHA++)
+			{
+				fPicture->Pic(iCHA>>2,iCHA&0b11)->AddObject(h2_STOT_FTOT[0][1][iTAM][iCHA]);
+			}
+			AddPicture(fPicture);
+		}
 
 
+#endif // IDATEN_MONITOR
 	
 
 /*		l_nc = MAX_CHA_old_AN >>2; // nr. of columns in picture
