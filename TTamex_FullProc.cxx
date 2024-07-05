@@ -1162,6 +1162,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][1] * (stot/1000-1100)
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][2] * (2*(stot/1000-1100)*(stot/1000-1100)-1)
 										+ par_f1_STOT_Energy[iSSY][iSFP][iTAM][iPCHA][3] * (4*(stot/1000-1100)*(stot/1000-1100)*(stot/1000-1100)-3*(stot/1000-1100));
+									energy *= factor_calE[iLaBr];
 								}
 #endif // ONLINE_CALIB
 
@@ -1215,7 +1216,6 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 #ifdef ONLINE_CALIB
 				calE = fOutput->GetCalE (i);
-				calE *= factor_calE[iPCHA+16*iTAM];
 				h1_Energy		[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE);
 				h2_PCHA_Energy	[iSSY][iSFP][iTAM]			->Fill(iPCHA,calE);
 				h2_Energy_FTle	[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE,ftle);
