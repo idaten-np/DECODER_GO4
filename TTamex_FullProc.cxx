@@ -1215,6 +1215,7 @@ Bool_t TTamex_FullProc::BuildEvent(TGo4EventElement* target)
 
 #ifdef ONLINE_CALIB
 				calE = fOutput->GetCalE (i);
+				calE *= factor_calE[iPCHA+16*iTAM];
 				h1_Energy		[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE);
 				h2_PCHA_Energy	[iSSY][iSFP][iTAM]			->Fill(iPCHA,calE);
 				h2_Energy_FTle	[iSSY][iSFP][iTAM][iPCHA]	->Fill(calE,ftle);
